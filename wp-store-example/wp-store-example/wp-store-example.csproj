@@ -148,6 +148,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\soomla-wp8-core\soomla-wp-core\soomla-wp-core\soomla-wp-core.csproj">
+      <Project>{500DF4F8-D7C2-495D-9734-B50CB3130009}</Project>
+      <Name>soomla-wp-core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\wp-store\wp-store\wp-store.csproj">
       <Project>{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}</Project>
       <Name>wp-store</Name>

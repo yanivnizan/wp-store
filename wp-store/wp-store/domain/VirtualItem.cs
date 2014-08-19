@@ -12,8 +12,7 @@ namespace SoomlaWpStore.domain
     {
         public VirtualItem(String Name, String Description, String ItemId) : base(Name, Description, ItemId)
         {
-            
-            
+
         }
 
         public VirtualItem(JObject jsonObject) : base(jsonObject)
@@ -49,6 +48,11 @@ namespace SoomlaWpStore.domain
         public String getItemId()
         {
             return mID;
+        }
+
+        public String getName()
+        {
+            return mName;
         }
 
         private const String TAG = "SOOMLA VirtualItem"; //used for Log messages

@@ -9,6 +9,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using wp_store_example.Resources;
 using SoomlaWpStore;
+using SoomlaWpCore;
 
 namespace wp_store_example
 {
@@ -18,7 +19,7 @@ namespace wp_store_example
         public MainPage()
         {
             InitializeComponent();
-
+            Soomla.initialize("this_is_my_secret");
             // Exemple de code pour la localisation d'ApplicationBar
             //BuildLocalizedApplicationBar();
         }
@@ -26,6 +27,7 @@ namespace wp_store_example
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             WPStore store = new WPStore();
+            
         }
 
         // Exemple de code pour la conception d'une ApplicationBar localisée

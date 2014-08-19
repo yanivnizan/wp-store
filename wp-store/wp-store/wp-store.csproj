@@ -84,6 +84,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="domain\VirtualItem.cs" />
+    <Compile Include="events\EventManager.cs" />
+    <Compile Include="IStoreAssets.cs" />
+    <Compile Include="purchasesTypes\PurchaseType.cs" />
     <Compile Include="WPStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -94,7 +97,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="data\" />
+    <Compile Include="events\UnexpectedStoreErrorEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -104,6 +107,49 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="exceptions\InsufficientFundsException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="domain\PurchasableVirtualItem.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="purchasesTypes\PurchaseWithMarket.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="domain\MarketItem.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="data\StoreJSONConsts.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="events\MarketPurchaseStartedEvent.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="events\ItemPurchaseStartedEventArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="purchasesTypes\PurchaseWithVirtualItem.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="exceptions\VirtualItemNotFoundException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="domain\VirtualCategory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="events\ItemPurchasedEventArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="data\StorageManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="domain\virtualCurrencies\VirtualCurrency.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="domain\virtualGoods\VirtualGood.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
