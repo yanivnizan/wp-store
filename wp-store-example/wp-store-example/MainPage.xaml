@@ -42,14 +42,35 @@
         <!--TitlePanel contient le nom de l'application et le titre de la page-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="SOOMLA Example App" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
-            <TextBlock Text="Test sandbox" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <TextBlock Text="Weak Currency"/>
+                <TextBlock x:Name="WeakCurrency" Text="0" Margin="10,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <TextBlock Text="Strong Currency"/>
+                <TextBlock x:Name="StrongCurrency" Text="0" Margin="10,0,0,0"/>
+            </StackPanel>
         </StackPanel>
 
         <!--ContentPanel - placez tout contenu supplémentaire ici-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Button Content="Button" HorizontalAlignment="Left" Click="Button_Click" Margin="133,196,0,0" VerticalAlignment="Top"/>
+            
+            <ScrollViewer HorizontalAlignment="Left" Height="597" VerticalAlignment="Top" Width="456">
+                <StackPanel x:Name="MainStackPanel" HorizontalAlignment="Left" Height="597" Width="456" VerticalAlignment="Top">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="100" Width="456" VerticalAlignment="Top">
 
+                        <Button Content="Give 1000 Weak" Click="Give1000Weak" />
+                        <Button Content="Give 100 Strong" Click="Give100Strong" />
+                    </StackPanel>
+                    
+                    
+                </StackPanel>
+
+
+            </ScrollViewer>
+            
         </Grid>
+
 
         <!--Supprimez les commentaires pour voir une grille d'alignement qui vous aidera à vous assurer que vos contrôles sont
             alignés sur les limites communes.  L'image a une marge supérieure de -32px pour

@@ -21,6 +21,7 @@ using SoomlaWpStore.data;
 using SoomlaWpStore.domain;
 using SoomlaWpStore.events;
 using SoomlaWpStore.exceptions;
+using System.Diagnostics;
 /*
 import com.soomla.BusProvider;
 import com.soomla.SoomlaUtils;
@@ -79,7 +80,7 @@ public class PurchaseWithVirtualItem : PurchaseType {
 
         VirtualItemStorage storage = StorageManager.getVirtualItemStorage(item);
 
-        assert storage != null;
+        Debug.Assert(storage != null);
         int balance = storage.getBalance(item);
         if (balance < mAmount){
             throw new InsufficientFundsException(mTargetItemId);

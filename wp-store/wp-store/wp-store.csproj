@@ -147,9 +147,66 @@
   <ItemGroup>
     <Compile Include="domain\virtualCurrencies\VirtualCurrency.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="data\VirtualItemStorage.cs" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="domain\virtualGoods\VirtualGood.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="data\VirtualGoodsStorage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="events\GoodUpgradeEventArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="domain\virtualGoods\UpgradeVG.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="domain\virtualGoods\LifetimeVG.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="domain\virtualGoods\SingleUseVG.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="domain\virtualGoods\SingleUsePackVG.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="domain\virtualGoods\EquippableVG.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="exceptions\NotEnoughGoodsException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="events\GoodBalanceChangedEventArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="events\GoodEquippedEventArgs.cs" />
+    <Compile Include="events\GoodUnEquippedEvent.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="data\VirtualCurrencyStorage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="events\CurrencyBalanceChangedEventArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="data\NonConsumableItemsStorage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="domain\NonConsumableItem.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="domain\virtualCurrencies\VirtualCurrencyPack.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="data\StoreInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="StoreConfig.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="StoreInventory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

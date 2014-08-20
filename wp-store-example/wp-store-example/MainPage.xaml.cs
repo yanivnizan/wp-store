@@ -10,6 +10,7 @@ using Microsoft.Phone.Shell;
 using wp_store_example.Resources;
 using SoomlaWpStore;
 using SoomlaWpCore;
+using SoomlaWpStore.events;
 
 namespace wp_store_example
 {
@@ -22,12 +23,32 @@ namespace wp_store_example
             Soomla.initialize("this_is_my_secret");
             // Exemple de code pour la localisation d'ApplicationBar
             //BuildLocalizedApplicationBar();
+            WPStore.GetInstance().initialize(new StoreAssets());
+
+            EventManager.GetInstance().CurrencyBalanceChangedEvent += new CurrencyBalanceChangedEventHandler(UpdateCurrencyBalance);
+            UpdateCurrencyBalance(null, null);
+
+            StackPanel stackP = new StackPanel();
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = "testTextBlock";
+            stackP.Children.Add(textBlock);
+            MainStackPanel.Children.Add(stackP);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void UpdateCurrencyBalance(Object o, CurrencyBalanceChangedEventArgs e)
         {
-            WPStore store = new WPStore();
-            
+            WeakCurrency.Text = StoreInventory.getVirtualItemBalance(StoreAssets.WEAK_CURRENCY_ITEM_ID).ToString();
+            StrongCurrency.Text = StoreInventory.getVirtualItemBalance(StoreAssets.STRONG_CURRENCY_ITEM_ID).ToString();
+        }
+
+        private void Give1000Weak(object sender, RoutedEventArgs e)
+        {
+            StoreInventory.giveVirtualItem(StoreAssets.WEAK_CURRENCY_ITEM_ID,1000);
+
+        }
+        private void Give100Strong(object sender, RoutedEventArgs e)
+        {
+            StoreInventory.giveVirtualItem(StoreAssets.STRONG_CURRENCY_ITEM_ID, 100);
         }
 
         // Exemple de code pour la conception d'une ApplicationBar localisée

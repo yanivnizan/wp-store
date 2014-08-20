@@ -19,7 +19,7 @@ namespace SoomlaWpStore.domain
         {
         }
 
-        public new JObject toJSONObject()
+        public virtual new JObject toJSONObject()
         {
             return base.toJSONObject();
         }

@@ -104,7 +104,7 @@ public class MarketItem {
      * SUBSCRIPTION is just like MANAGED except that the user gets charged periodically (monthly
      * or yearly).
      */
-    public static enum Managed { MANAGED, UNMANAGED, SUBSCRIPTION }
+    public enum Managed { MANAGED, UNMANAGED, SUBSCRIPTION }
 
 
     /** Setters and Getters **/

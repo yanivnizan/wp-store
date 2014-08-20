@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using SoomlaWpStore.domain;
 namespace SoomlaWpStore.purchasesTypes
 {
-    abstract class PurchaseType
+    public abstract class PurchaseType
     {
         /// <exception cref="InsufficientFundsException"></exception>
         public abstract void buy(String payload);

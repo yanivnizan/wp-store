@@ -13,6 +13,7 @@ using SoomlaWpCore;
 using SoomlaWpCore.data;
 using SoomlaWpStore.events;
 using SoomlaWpStore.domain;
+using SoomlaWpStore.data;
 namespace SoomlaWpStore
 {
     public class WPStore
@@ -33,10 +34,10 @@ namespace SoomlaWpStore
 
         SoomlaUtils.LogDebug(TAG, "SoomlaStore Initializing ...");
 
-        //StoreInfo.setStoreAssets(storeAssets);
+        StoreInfo.setStoreAssets(storeAssets);
 
         // Update SOOMLA store from DB
-        //StoreInfo.initializeFromDB();
+        StoreInfo.initializeFromDB();
 
         refreshInventory();
 
@@ -434,7 +435,7 @@ namespace SoomlaWpStore
      *
      * @return singleton instance of <code>SoomlaStore</code>
      */
-    public static WPStore getInstance() {
+    public static WPStore GetInstance() {
         if (sInstance == null) {
             sInstance = new WPStore();
         }
