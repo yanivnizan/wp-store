@@ -9,14 +9,18 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using System.Collections.Generic;
 using SoomlaWpCore;
 using SoomlaWpCore.data;
 using SoomlaWpStore.events;
 using SoomlaWpStore.domain;
 using SoomlaWpStore.data;
+using SoomlaWpStore.purchasesTypes;
+using SoomlaWpStore.billing.wp.store;
+using SoomlaWpStore.exceptions;
 namespace SoomlaWpStore
 {
-    public class WPStore
+    public class SoomlaStore
     {
         
         /**
@@ -31,6 +35,11 @@ namespace SoomlaWpStore
             handleErrorResult(err);
             return false;
         }
+
+        StoreManager.OnItemPurchasedCB += handleSuccessfulPurchase;
+        StoreManager.OnItemPurchaseCancelCB += handleCancelledPurchase;
+        StoreManager.OnListingLoadedCB += refreshMarketItemsDetails;
+        StoreManager.GetInstance().Initialize();
 
         SoomlaUtils.LogDebug(TAG, "SoomlaStore Initializing ...");
 
@@ -62,6 +71,26 @@ namespace SoomlaWpStore
      */
     private void restoreTransactions(bool followedByRefreshItemsDetails) {
         SoomlaUtils.LogDebug(TAG, "TODO restore Transaction");
+
+        EventManager.GetInstance().OnRestoreTransactionsStartedEvent(this, new RestoreTransactionsStartedEventArgs());
+
+        foreach (var item in StoreManager.licInfos.ProductLicenses)
+        {
+            if (item.Value.IsActive)
+            {
+                SoomlaUtils.LogDebug(TAG, "Got owned item: " + item.Value.ProductId);
+
+                handleSuccessfulPurchase(item.Value.ProductId);
+            }
+        }
+
+
+        EventManager.GetInstance().OnRestoreTransactionsFinishedEvent(this, new RestoreTransactionsFinishedEventArgs(true));
+
+        if (followedByRefreshItemsDetails)
+        {
+            StoreManager.GetInstance().LoadListingInfo();
+        }
         /*
         mInAppBillingService.initializeBillingService(
                 new IabCallbacks.IabInitListener() {
@@ -122,8 +151,41 @@ namespace SoomlaWpStore
      * This operation will "fill" up the MarketItem objects with the information you provided in
      * the developer console including: localized price (as string), title and description.
      */
-    public void refreshMarketItemsDetails() {
+    public void refreshMarketItemsDetails(Dictionary<string, MarketProductInfos> marketInfos)
+    {
         SoomlaUtils.LogDebug(TAG, "TODO refreshMarketItemsDetails");
+        
+
+        List<MarketItem> marketItems = new List<MarketItem>();
+        foreach (var mpi in marketInfos)
+        {
+
+            String productId = mpi.Value.ProductId;
+            String title = mpi.Value.Name;
+            String price = mpi.Value.FormattedPrice;
+            String desc = mpi.Value.Description;
+
+            try
+            {
+                PurchasableVirtualItem pvi = StoreInfo.
+                        getPurchasableItem(productId);
+                MarketItem mi = ((PurchaseWithMarket)
+                        pvi.getPurchaseType()).getMarketItem();
+                mi.setMarketTitle(title);
+                mi.setMarketPrice(price);
+                mi.setMarketDescription(desc);
+
+                marketItems.Add(mi);
+            }
+            catch (VirtualItemNotFoundException e)
+            {
+                String msg = "(refreshInventory) Couldn't find a "
+                        + "purchasable item associated with: " + productId;
+                SoomlaUtils.LogError(TAG, msg);
+            }
+        }
+        EventManager.GetInstance().OnMarketItemsRefreshFinishedEvent(this,new MarketItemsRefreshFinishedEventArgs(marketItems));
+        
         /*
         mInAppBillingService.initializeBillingService(
                 new IabCallbacks.IabInitListener() {
@@ -217,17 +279,20 @@ namespace SoomlaWpStore
      */
     public void buyWithMarket(MarketItem marketItem, String payload) {
         SoomlaUtils.LogDebug(TAG, "TODO buyWithMarket");
-        /*
+        
         PurchasableVirtualItem pvi;
         try {
             pvi = StoreInfo.getPurchasableItem(marketItem.getProductId());
         } catch (VirtualItemNotFoundException e) {
             String msg = "Couldn't find a purchasable item associated with: " + marketItem.getProductId();
             SoomlaUtils.LogError(TAG, msg);
-            BusProvider.getInstance().post(new UnexpectedStoreErrorEvent(msg));
+            EventManager.GetInstance().OnUnexpectedStoreErrorEvent(this, new UnexpectedStoreErrorEventArgs(msg));
             return;
         }
 
+        EventManager.GetInstance().OnMarketPurchaseStartedEvent(this, new MarketPurchaseStartedEventArgs(pvi));
+        StoreManager.GetInstance().PurchaseProduct(marketItem.getProductId());
+        /*
         mInAppBillingService.initializeBillingService
                 (new IabCallbacks.IabInitListener() {
 
@@ -316,8 +381,44 @@ namespace SoomlaWpStore
      *
      * @param purchase purchase whose state is to be checked.
      */
-    private void handleSuccessfulPurchase(/*IabPurchase*/ Object purchase) {
+    private void handleSuccessfulPurchase(/*IabPurchase*/ string productId) {
         SoomlaUtils.LogDebug(TAG, "TODO handleSuccessfulPurchase");
+
+        PurchasableVirtualItem pvi;
+        try
+        {
+            pvi = StoreInfo.getPurchasableItem(productId);
+        }
+        catch (VirtualItemNotFoundException e)
+        {
+            SoomlaUtils.LogError(TAG, "(handleSuccessfulPurchase - purchase or query-inventory) "
+                    + "ERROR : Couldn't find the " +
+                    " VirtualCurrencyPack OR MarketItem  with productId: " + productId +
+                    ". It's unexpected so an unexpected error is being emitted.");
+            EventManager.GetInstance().OnUnexpectedStoreErrorEvent(this, new UnexpectedStoreErrorEventArgs("Couldn't find the productId "
+                    + "of a product after purchase or query-inventory."));
+            return;
+        }
+        
+        SoomlaUtils.LogDebug(TAG, "IabPurchase successful.");
+
+        // if the purchasable item is NonConsumableItem and it already exists then we
+        // don't fire any events.
+        // fixes: https://github.com/soomla/unity3d-store/issues/192
+        if (pvi is NonConsumableItem) {
+            bool exists = StorageManager.getNonConsumableItemsStorage().
+                    nonConsumableItemExists((NonConsumableItem) pvi);
+            if (exists) {
+                return;
+            }
+        }
+
+        EventManager.GetInstance().OnMarketPurchaseEvent(this,new MarketPurchaseEventArgs(pvi,null,null));
+        pvi.give(1);
+        
+        EventManager.GetInstance().OnItemPurchasedEvent(this,new ItemPurchasedEventArgs(pvi, null));
+        consumeIfConsumable(pvi);
+
         /*
         String sku = purchase.getSku();
         String developerPayload = purchase.getDeveloperPayload();
@@ -380,20 +481,19 @@ namespace SoomlaWpStore
      *
      * @param purchase cancelled purchase to handle.
      */
-    private void handleCancelledPurchase(/*IabPurchase*/ Object purchase) {
+    private void handleCancelledPurchase(String productId, bool error) {
         SoomlaUtils.LogDebug(TAG, "TODO handleCancelledPurchase");
-        /*
-        String sku = purchase.getSku();
+        
         try {
-            PurchasableVirtualItem v = StoreInfo.getPurchasableItem(sku);
-            BusProvider.getInstance().post(new MarketPurchaseCancelledEvent(v));
+            PurchasableVirtualItem v = StoreInfo.getPurchasableItem(productId);
+            EventManager.GetInstance().OnMarketPurchaseCancelledEvent(this, new MarketPurchaseCancelledEventArgs(v));
         } catch (VirtualItemNotFoundException e) {
             SoomlaUtils.LogError(TAG, "(purchaseActionResultCancelled) ERROR : Couldn't find the "
-                    + "VirtualCurrencyPack OR MarketItem  with productId: " + sku
+                    + "VirtualCurrencyPack OR MarketItem  with productId: " + productId
                     + ". It's unexpected so an unexpected error is being emitted.");
-            BusProvider.getInstance().post(new UnexpectedStoreErrorEvent());
+            EventManager.GetInstance().OnUnexpectedStoreErrorEvent(this, new UnexpectedStoreErrorEventArgs(e.Message));
         }
-        */
+        
     }
 
     /**
@@ -401,19 +501,18 @@ namespace SoomlaWpStore
      *
      * @param purchase purchase to be consumed
      */
-    private void consumeIfConsumable(/*IabPurchase*/ Object purchase, PurchasableVirtualItem pvi) {
+    private void consumeIfConsumable(PurchasableVirtualItem pvi) {
         SoomlaUtils.LogDebug(TAG, "TODO consumeIfConsumable");
-        /*
+        
         try {
-            if (!(pvi instanceof NonConsumableItem)) {
-                mInAppBillingService.consume(purchase);
+            if (!(pvi is NonConsumableItem)) {
+                StoreManager.GetInstance().Consume(pvi.getItemId());
             }
-        } catch (IabException e) {
-            SoomlaUtils.LogDebug(TAG, "Error while consuming: itemId: " + pvi.getItemId() +
-                    "   productId: " + purchase.getSku());
-            BusProvider.getInstance().post(new UnexpectedStoreErrorEvent(e.getMessage()));
+        } catch (Exception e) {
+            SoomlaUtils.LogDebug(TAG, "Error while consuming: itemId: " + pvi.getItemId());
+            EventManager.GetInstance().OnUnexpectedStoreErrorEvent(this, new UnexpectedStoreErrorEventArgs(e.Message));
         }
-         */
+        
     }
 
     /**
@@ -428,16 +527,16 @@ namespace SoomlaWpStore
     }
 
     /* Singleton */
-    private static WPStore sInstance = null;
+    private static SoomlaStore sInstance = null;
 
     /**
      * Retrieves the singleton instance of <code>SoomlaStore</code>
      *
      * @return singleton instance of <code>SoomlaStore</code>
      */
-    public static WPStore GetInstance() {
+    public static SoomlaStore GetInstance() {
         if (sInstance == null) {
-            sInstance = new WPStore();
+            sInstance = new SoomlaStore();
         }
         return sInstance;
     }
@@ -445,7 +544,7 @@ namespace SoomlaWpStore
     /**
      * Constructor
      */
-    private WPStore()
+    private SoomlaStore()
     {
     }
 

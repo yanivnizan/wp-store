@@ -13,36 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
-
-using SoomlaWpStore.domain;
-namespace SoomSoomlaWpStore.events
+using System;
+namespace SoomlaWpStore.events
 {
-/**
- * This event is fired when a Market purchase has started.
- */
-public class MarketPurchaseStartedEvent {
-
     /**
-     * Constructor
-     *
-     * @param purchasableVirtualItem
+     * This event is fired when the restore transactions process has started.
      */
-    public MarketPurchaseStartedEvent(PurchasableVirtualItem purchasableVirtualItem) {
-        mPurchasableVirtualItem = purchasableVirtualItem;
+    public class RestoreTransactionsStartedEventArgs
+    {
     }
-
-
-    /** Setters and Getters */
-
-    public PurchasableVirtualItem getPurchasableVirtualItem() {
-        return mPurchasableVirtualItem;
-    }
-
-
-    /** Private Members */
-
-    private PurchasableVirtualItem mPurchasableVirtualItem;
-}
 }

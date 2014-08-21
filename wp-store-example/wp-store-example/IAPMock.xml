@@ -1,0 +1,44 @@
+﻿<?xml version="1.0"?>
+<ProductListings>
+  <ProductListing Key="noads" Purchased="false" Fulfilled="false">
+    <Name>No Ads</Name>
+    <Description>A sample product listing</Description>
+    <ProductId>noads</ProductId>
+    <ProductType>Durable</ProductType>
+    <FormattedPrice>$1.00</FormattedPrice>
+    <ImageUri></ImageUri>
+    <Keywords>test;product</Keywords>
+    <Tag>Additional text</Tag>
+  </ProductListing>
+  <ProductListing Key="strongpack1" Purchased="false" Fulfilled="false">
+    <Name>Strong Pack1</Name>
+    <Description>A sample product listing</Description>
+    <ProductId>strongpack1</ProductId>
+    <ProductType>Consumable</ProductType>
+    <FormattedPrice>$1.00</FormattedPrice>
+    <ImageUri></ImageUri>
+    <Keywords>test;product</Keywords>
+    <Tag>Additional text</Tag>
+  </ProductListing>
+  <ProductListing Key="strongpack2" Purchased="false" Fulfilled="false">
+    <Name>Strong Pack2</Name>
+    <Description>A sample product listing</Description>
+    <ProductId>strongpack2</ProductId>
+    <ProductType>Consumable</ProductType>
+    <FormattedPrice>$3.00</FormattedPrice>
+    <ImageUri></ImageUri>
+    <Keywords>test;product</Keywords>
+    <Tag>Additional text</Tag>
+  </ProductListing>
+  <ProductListing Key="strongpack3" Purchased="false" Fulfilled="false">
+    <Name>Strong Pack3</Name>
+    <Description>A sample product listing</Description>
+    <ProductId>strongpack3</ProductId>
+    <ProductType>Consumable</ProductType>
+    <FormattedPrice>$6.00</FormattedPrice>
+    <ImageUri></ImageUri>
+    <Keywords>test;product</Keywords>
+    <Tag>Additional text</Tag>
+  </ProductListing>
+  
+</ProductListings>

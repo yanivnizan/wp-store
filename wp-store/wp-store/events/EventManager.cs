@@ -16,6 +16,13 @@ namespace SoomlaWpStore.events
     public delegate void GoodEquippedEventHandler(Object o, GoodEquippedEventArgs e);
     public delegate void GoodUnEquippedEventHandler(Object o, GoodUnEquippedEventArgs e);
     public delegate void CurrencyBalanceChangedEventHandler(Object o, CurrencyBalanceChangedEventArgs e);
+    public delegate void MarketItemsRefreshStartedEventHandler(Object o, MarketItemsRefreshStartedEventArgs e);
+    public delegate void MarketItemsRefreshFinishedEventHandler(Object o, MarketItemsRefreshFinishedEventArgs e);
+    public delegate void RestoreTransactionsStartedEventHandler(Object o, RestoreTransactionsStartedEventArgs e);
+    public delegate void RestoreTransactionsFinishedEventHandler(Object o, RestoreTransactionsFinishedEventArgs e);
+    public delegate void MarketPurchaseStartedEventHandler(Object o, MarketPurchaseStartedEventArgs e);
+    public delegate void MarketPurchaseEventHandler(Object o, MarketPurchaseEventArgs e);
+    public delegate void MarketPurchaseCancelledEventHandler(Object o, MarketPurchaseCancelledEventArgs e);
     
     public class EventManager
     {
@@ -116,6 +123,76 @@ namespace SoomlaWpStore.events
             if (CurrencyBalanceChangedEvent != null)
             {
                 CurrencyBalanceChangedEvent(o, e);
+            }
+        }
+
+        public event MarketItemsRefreshStartedEventHandler MarketItemsRefreshStartedEvent;
+        public void OnMarketItemsRefreshStartedEvent(Object o, MarketItemsRefreshStartedEventArgs e)
+        {
+            LogEvent(o, "MarketItemsRefreshStarted");
+            if (MarketItemsRefreshStartedEvent != null)
+            {
+                MarketItemsRefreshStartedEvent(o, e);
+            }
+        }
+
+        public event MarketItemsRefreshFinishedEventHandler MarketItemsRefreshFinishedEvent;
+        public void OnMarketItemsRefreshFinishedEvent(Object o, MarketItemsRefreshFinishedEventArgs e)
+        {
+            LogEvent(o, "MarketItemsRefreshFinished");
+            if (MarketItemsRefreshFinishedEvent != null)
+            {
+                MarketItemsRefreshFinishedEvent(o, e);
+            }
+        }
+
+        public event RestoreTransactionsStartedEventHandler RestoreTransactionsStartedEvent;
+        public void OnRestoreTransactionsStartedEvent(Object o, RestoreTransactionsStartedEventArgs e)
+        {
+            LogEvent(o, "RestoreTransactionsStarted");
+            if (RestoreTransactionsStartedEvent != null)
+            {
+                RestoreTransactionsStartedEvent(o, e);
+            }
+        }
+
+        public event RestoreTransactionsFinishedEventHandler RestoreTransactionsFinishedEvent;
+        public void OnRestoreTransactionsFinishedEvent(Object o, RestoreTransactionsFinishedEventArgs e)
+        {
+            LogEvent(o, "RestoreTransactionsFinished");
+            if (RestoreTransactionsFinishedEvent != null)
+            {
+                RestoreTransactionsFinishedEvent(o, e);
+            }
+        }
+
+        public event MarketPurchaseStartedEventHandler MarketPurchaseStartedEvent;
+        public void OnMarketPurchaseStartedEvent(Object o, MarketPurchaseStartedEventArgs e)
+        {
+            LogEvent(o, "MarketPurchaseStarted");
+            if (MarketPurchaseStartedEvent != null)
+            {
+                MarketPurchaseStartedEvent(o, e);
+            }
+        }
+
+        public event MarketPurchaseEventHandler MarketPurchaseEvent;
+        public void OnMarketPurchaseEvent(Object o, MarketPurchaseEventArgs e)
+        {
+            LogEvent(o, "MarketPurchase");
+            if (MarketPurchaseEvent != null)
+            {
+                MarketPurchaseEvent(o, e);
+            }
+        }
+
+        public event MarketPurchaseCancelledEventHandler MarketPurchaseCancelledEvent;
+        public void OnMarketPurchaseCancelledEvent(Object o, MarketPurchaseCancelledEventArgs e)
+        {
+            LogEvent(o, "MarketPurchaseCancelled");
+            if (MarketPurchaseCancelledEvent != null)
+            {
+                MarketPurchaseCancelledEvent(o, e);
             }
         }
 

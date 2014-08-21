@@ -70,7 +70,7 @@ public class PurchaseWithMarket : PurchaseType {
         EventManager.GetInstance().OnItemPurchaseStartedEvent(this,new ItemPurchaseStartedEventArgs(getAssociatedItem()));
         
         try {
-            WPStore.GetInstance().buyWithMarket(mMarketItem, payload);
+            SoomlaStore.GetInstance().buyWithMarket(mMarketItem, payload);
         } catch (Exception e) {
             SoomlaUtils.LogError(TAG, "Error when purchasing item");
         }

@@ -83,11 +83,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="billing\wp\mock\CurrentApp.cs" />
+    <Compile Include="billing\wp\mock\LicenseInformation.cs" />
+    <Compile Include="billing\wp\mock\ListingInformation.cs" />
+    <Compile Include="billing\wp\mock\MockIAP.cs" />
+    <Compile Include="billing\wp\mock\MockReceiptState.cs" />
+    <Compile Include="billing\wp\mock\MockReceiptStore.cs" />
+    <Compile Include="billing\wp\mock\ProductLicense.cs" />
+    <Compile Include="billing\wp\mock\ProductListing.cs" />
+    <Compile Include="billing\wp\store\StoreManager.cs" />
+    <Compile Include="billing\wp\store\Dispatcher.cs" />
+    <Compile Include="billing\wp\store\MarketProductInfos.cs" />
     <Compile Include="domain\VirtualItem.cs" />
     <Compile Include="events\EventManager.cs" />
     <Compile Include="IStoreAssets.cs" />
     <Compile Include="purchasesTypes\PurchaseType.cs" />
-    <Compile Include="WPStore.cs" />
+    <Compile Include="SoomlaStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -124,7 +135,7 @@
     <Compile Include="data\StoreJSONConsts.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="events\MarketPurchaseStartedEvent.cs" />
+    <Compile Include="events\MarketPurchaseStartedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="events\ItemPurchaseStartedEventArgs.cs" />
@@ -207,6 +218,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="StoreInventory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="events\MarketItemsRefreshFinishedEventArgs.cs" />
+    <Compile Include="events\MarketItemsRefreshStartedEventArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="events\RestoreTransactionsFinishedEventArgs.cs" />
+    <Compile Include="events\RestoreTransactionsStartedEventArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="events\MarketPurchaseCancelledEventArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="events\MarketPurchaseEventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

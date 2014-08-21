@@ -56,7 +56,7 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             
             <ScrollViewer HorizontalAlignment="Left" Height="597" VerticalAlignment="Top" Width="456">
-                <StackPanel x:Name="MainStackPanel" HorizontalAlignment="Left" Height="597" Width="456" VerticalAlignment="Top">
+                <StackPanel x:Name="MainStackPanel" HorizontalAlignment="Left" Width="456" VerticalAlignment="Top">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="100" Width="456" VerticalAlignment="Top">
 
                         <Button Content="Give 1000 Weak" Click="Give1000Weak" />
