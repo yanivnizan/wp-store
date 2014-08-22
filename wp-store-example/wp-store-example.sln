@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wp-store-example", "wp-stor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wp-store", "..\wp-store\wp-store\wp-store.csproj", "{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "soomla-wp-core", "..\..\soomla-wp8-core\soomla-wp-core\soomla-wp-core\soomla-wp-core.csproj", "{500DF4F8-D7C2-495D-9734-B50CB3130009}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "soomla-wp-core", "..\submodules\soomla-wp-core\soomla-wp-core\soomla-wp-core\soomla-wp-core.csproj", "{500DF4F8-D7C2-495D-9734-B50CB3130009}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
