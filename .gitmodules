@@ -1,0 +1,3 @@
+[submodule "submodules/soomla-wp-core"]
+	path = submodules/soomla-wp-core
+	url = git@github.com:soomla/soomla-wp-core.git
