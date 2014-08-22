@@ -29,7 +29,7 @@ namespace wp_store_example
             Soomla.initialize("this_is_my_secret");
             // Exemple de code pour la localisation d'ApplicationBar
             //BuildLocalizedApplicationBar();
-            SoomlaStore.GetInstance().initialize(new StoreAssets());
+            SoomlaStore.GetInstance().initialize(new StoreAssets(),true);
 
             EventManager.GetInstance().CurrencyBalanceChangedEvent += new CurrencyBalanceChangedEventHandler(UpdateCurrencyBalance);
             EventManager.GetInstance().GoodBalanceChangedEvent += new GoodBalanceChangedEventHandler(UpdateGoodBalance);

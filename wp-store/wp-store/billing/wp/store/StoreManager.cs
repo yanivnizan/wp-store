@@ -7,14 +7,14 @@ using System.Xml.Linq;
 using SoomlaWpCore;
 using SoomlaWpStore.events;
 
-#if DEBUG
+
 using MockIAPLib;
-using Store = MockIAPLib;
-using CurApp = MockIAPLib.CurrentApp;
-#else
+using MockStore = MockIAPLib;
+using MockCurApp = MockIAPLib.CurrentApp;
+
 using Store = Windows.ApplicationModel.Store;
 using CurApp = Windows.ApplicationModel.Store.CurrentApp;
-#endif
+
 
 
 namespace SoomlaWpStore.billing.wp.store
@@ -24,6 +24,9 @@ namespace SoomlaWpStore.billing.wp.store
         static private StoreManager instance;
         public static Store.LicenseInformation licInfos;
         public static Store.ListingInformation listingInfos;
+        public static MockStore.LicenseInformation licInfosMock;
+        public static MockStore.ListingInformation listingInfosMock;
+
         public static Dictionary<string,MarketProductInfos> marketProductInfos;
         private bool Initialized = false;
 
@@ -31,8 +34,17 @@ namespace SoomlaWpStore.billing.wp.store
         {
             if(Initialized==false)
             {
-                SetupMockIAP();
-                licInfos = CurApp.LicenseInformation;
+                if (StoreConfig.STORE_TEST_MODE)
+                {
+                    SoomlaUtils.LogDebug(TAG, "WARNING You are running in Store Test Mode! Don't forget to disable the test mode before you publish the app.");
+                    SetupMockIAP();
+                    licInfosMock = MockCurApp.LicenseInformation;
+
+                }
+                else
+                {
+                    licInfos = CurApp.LicenseInformation;
+                }
                 marketProductInfos = new Dictionary<string, MarketProductInfos>();
                 //LoadListingInfo();
                 Initialized = true;
@@ -44,36 +56,79 @@ namespace SoomlaWpStore.billing.wp.store
             EventManager.GetInstance().OnMarketItemsRefreshStartedEvent(this, new MarketItemsRefreshStartedEventArgs());
             try
             {
-                listingInfos = await Store.CurrentApp.LoadListingInformationAsync();
-                marketProductInfos.Clear();
-                if (listingInfos.ProductListings.Count > 0)
-                {
-                    foreach (KeyValuePair<string, Store.ProductListing> pair in listingInfos.ProductListings)
-                    {
-                        MarketProductInfos marketProduct = new MarketProductInfos();
-                        marketProduct.Name = pair.Value.Name;
-                        marketProduct.Description = pair.Value.Description;
-                        marketProduct.FormattedPrice = pair.Value.FormattedPrice;
-                        marketProduct.ImageUri = pair.Value.ImageUri;
-                        marketProduct.Keywords = pair.Value.Keywords;
-                        marketProduct.ProductId = pair.Value.ProductId;
 
-                        switch (pair.Value.ProductType)
+                
+                if (StoreConfig.STORE_TEST_MODE)
+                {
+                    listingInfosMock = await MockStore.CurrentApp.LoadListingInformationAsync();
+
+                    marketProductInfos.Clear();
+                    if (listingInfosMock.ProductListings.Count > 0)
+                    {
+                        foreach (KeyValuePair<string, MockStore.ProductListing> pair in listingInfosMock.ProductListings)
                         {
-                            case Windows.ApplicationModel.Store.ProductType.Consumable:
-                                marketProduct.ProductType = MarketProductInfos.MarketProductType.CONSUMABLE;
-                                break;
-                            case Windows.ApplicationModel.Store.ProductType.Durable:
-                                marketProduct.ProductType = MarketProductInfos.MarketProductType.DURABLE;
-                                break;
-                            case Windows.ApplicationModel.Store.ProductType.Unknown:
-                                marketProduct.ProductType = MarketProductInfos.MarketProductType.UNKNOWN;
-                                break;
+                            MarketProductInfos marketProduct = new MarketProductInfos();
+                            marketProduct.Name = pair.Value.Name;
+                            marketProduct.Description = pair.Value.Description;
+                            marketProduct.FormattedPrice = pair.Value.FormattedPrice;
+                            marketProduct.ImageUri = pair.Value.ImageUri;
+                            marketProduct.Keywords = pair.Value.Keywords;
+                            marketProduct.ProductId = pair.Value.ProductId;
+
+                            switch (pair.Value.ProductType)
+                            {
+                                case Windows.ApplicationModel.Store.ProductType.Consumable:
+                                    marketProduct.ProductType = MarketProductInfos.MarketProductType.CONSUMABLE;
+                                    break;
+                                case Windows.ApplicationModel.Store.ProductType.Durable:
+                                    marketProduct.ProductType = MarketProductInfos.MarketProductType.DURABLE;
+                                    break;
+                                case Windows.ApplicationModel.Store.ProductType.Unknown:
+                                    marketProduct.ProductType = MarketProductInfos.MarketProductType.UNKNOWN;
+                                    break;
+                            }
+                            marketProduct.Tag = pair.Value.Tag;
+                            marketProductInfos.Add(pair.Key, marketProduct);
                         }
-                        marketProduct.Tag = pair.Value.Tag;
-                        marketProductInfos.Add(pair.Key, marketProduct);
                     }
                 }
+                else
+                {
+                    listingInfos = await Store.CurrentApp.LoadListingInformationAsync();
+                    IReadOnlyDictionary<string, Store.ProductListing> productListing;
+                    productListing = listingInfos.ProductListings;
+
+                    marketProductInfos.Clear();
+                    if (productListing.Count > 0)
+                    {
+                        foreach (KeyValuePair<string, Store.ProductListing> pair in listingInfos.ProductListings)
+                        {
+                            MarketProductInfos marketProduct = new MarketProductInfos();
+                            marketProduct.Name = pair.Value.Name;
+                            marketProduct.Description = pair.Value.Description;
+                            marketProduct.FormattedPrice = pair.Value.FormattedPrice;
+                            marketProduct.ImageUri = pair.Value.ImageUri;
+                            marketProduct.Keywords = pair.Value.Keywords;
+                            marketProduct.ProductId = pair.Value.ProductId;
+
+                            switch (pair.Value.ProductType)
+                            {
+                                case Windows.ApplicationModel.Store.ProductType.Consumable:
+                                    marketProduct.ProductType = MarketProductInfos.MarketProductType.CONSUMABLE;
+                                    break;
+                                case Windows.ApplicationModel.Store.ProductType.Durable:
+                                    marketProduct.ProductType = MarketProductInfos.MarketProductType.DURABLE;
+                                    break;
+                                case Windows.ApplicationModel.Store.ProductType.Unknown:
+                                    marketProduct.ProductType = MarketProductInfos.MarketProductType.UNKNOWN;
+                                    break;
+                            }
+                            marketProduct.Tag = pair.Value.Tag;
+                            marketProductInfos.Add(pair.Key, marketProduct);
+                        }
+                    }
+                }
+
             }
             catch (Exception e)
             {
@@ -85,7 +140,6 @@ namespace SoomlaWpStore.billing.wp.store
 
         private void SetupMockIAP()
         {
-#if DEBUG
             MockIAP.Init();
 
             MockIAP.RunInMockMode(true);
@@ -94,7 +148,6 @@ namespace SoomlaWpStore.billing.wp.store
             SoomlaUtils.LogDebug(TAG,"WStorePlugin Mock XML "+xDocument.ToString());
             
             MockIAP.PopulateIAPItemsFromXml(xDocument.ToString());
-#endif
         }
 
         static public StoreManager GetInstance()
@@ -132,22 +185,30 @@ namespace SoomlaWpStore.billing.wp.store
         {
             try
             {
-                // Kick off purchase; don't ask for a receipt when it returns
-                await CurApp.RequestProductPurchaseAsync(productId, false);
+                bool licenceActiv = false;
+                if (StoreConfig.STORE_TEST_MODE)
+                {
+                    // Kick off purchase; don't ask for a receipt when it returns
+                    await MockCurApp.RequestProductPurchaseAsync(productId, false);
+                    licInfosMock = MockCurApp.LicenseInformation;
+                    licenceActiv = licInfosMock.ProductLicenses[productId].IsActive;
+                }
+                else
+                {
+                    // Kick off purchase; don't ask for a receipt when it returns
+                    await CurApp.RequestProductPurchaseAsync(productId, false);
+                    licInfos = CurApp.LicenseInformation;
+                    licenceActiv = licInfos.ProductLicenses[productId].IsActive;
+                }
 
-                // Now that purchase is done, give the user the goods they paid for
-                // (DoFulfillment is defined later)
-                //DoFulfillment();
-                //ProductLicense license = CurrentApp.LicenseInformation.ProductLicenses[productId];
-                licInfos = CurApp.LicenseInformation;
-                if (licInfos.ProductLicenses[productId].IsActive)
+                if (licenceActiv)
                 {
                     
                     OnItemPurchasedCB(productId);
                 }
                 else
                 {
-                    SoomlaUtils.LogDebug(TAG,"WStorePlugin cancelled " + productId);
+                    SoomlaUtils.LogDebug(TAG,"Purchase cancelled " + productId);
                     OnItemPurchaseCancelCB(productId, false);
                 }
 
@@ -166,7 +227,14 @@ namespace SoomlaWpStore.billing.wp.store
             SoomlaUtils.LogDebug(TAG, "WStorePlugin consume " + productId);
             try
             {
-                CurApp.ReportProductFulfillment(productId);
+                if (StoreConfig.STORE_TEST_MODE)
+                {
+                    MockCurApp.ReportProductFulfillment(productId);
+                }
+                else
+                {
+                    CurApp.ReportProductFulfillment(productId);
+                }
             }
             catch (InvalidOperationException e)
             {
@@ -179,9 +247,28 @@ namespace SoomlaWpStore.billing.wp.store
         {
             bool isPurchased = false;
             SoomlaUtils.LogDebug(TAG,"Licence " + productId + " " + licInfos.ProductLicenses[productId].IsActive.ToString());
-            if (licInfos.ProductLicenses.ContainsKey(productId))
+
+            bool containKey = false;
+            if (StoreConfig.STORE_TEST_MODE)
             {
-                isPurchased = licInfos.ProductLicenses[productId].IsActive;
+                containKey = licInfosMock.ProductLicenses.ContainsKey(productId);
+            }
+            else
+            {
+                containKey = licInfos.ProductLicenses.ContainsKey(productId);
+            }
+
+            if (containKey)
+            {
+                if (StoreConfig.STORE_TEST_MODE)
+                {
+                    isPurchased = licInfosMock.ProductLicenses[productId].IsActive;
+                }
+                else
+                {
+                    isPurchased = licInfos.ProductLicenses[productId].IsActive;
+                }
+                
                 SoomlaUtils.LogDebug(TAG,productId + " has licence");
                 if (isPurchased)
                 {

@@ -28,6 +28,7 @@ public class StoreConfig {
     // after a refund or not. (default: false)
     public const bool friendlyRefunds = false;
 
+    public static bool STORE_TEST_MODE = true;
     /**
      * ---NEVER!--- CHANGE THE VALUE FOR THIS VARIABLE !!!
      * This value defines the version of the metadata located in your database.

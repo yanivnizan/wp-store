@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2012 for Windows Phone
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wp-store-example", "wp-store-example\wp-store-example.csproj", "{D162FAF0-6815-47EB-B17B-38D69385493F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wp-store", "..\wp-store\wp-store\wp-store.csproj", "{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "soomla-wp-core", "..\submodules\soomla-wp-core\soomla-wp-core\soomla-wp-core\soomla-wp-core.csproj", "{500DF4F8-D7C2-495D-9734-B50CB3130009}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wp-store", "..\wp-store\wp-store\wp-store.csproj", "{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,18 +35,6 @@ Global
 		{D162FAF0-6815-47EB-B17B-38D69385493F}.Release|x86.ActiveCfg = Release|x86
 		{D162FAF0-6815-47EB-B17B-38D69385493F}.Release|x86.Build.0 = Release|x86
 		{D162FAF0-6815-47EB-B17B-38D69385493F}.Release|x86.Deploy.0 = Release|x86
-		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Debug|ARM.ActiveCfg = Debug|ARM
-		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Debug|ARM.Build.0 = Debug|ARM
-		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Debug|x86.ActiveCfg = Debug|x86
-		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Debug|x86.Build.0 = Debug|x86
-		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Release|ARM.ActiveCfg = Release|ARM
-		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Release|ARM.Build.0 = Release|ARM
-		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Release|x86.ActiveCfg = Release|x86
-		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Release|x86.Build.0 = Release|x86
 		{500DF4F8-D7C2-495D-9734-B50CB3130009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{500DF4F8-D7C2-495D-9734-B50CB3130009}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{500DF4F8-D7C2-495D-9734-B50CB3130009}.Debug|ARM.ActiveCfg = Debug|ARM
@@ -59,6 +47,18 @@ Global
 		{500DF4F8-D7C2-495D-9734-B50CB3130009}.Release|ARM.Build.0 = Release|ARM
 		{500DF4F8-D7C2-495D-9734-B50CB3130009}.Release|x86.ActiveCfg = Release|x86
 		{500DF4F8-D7C2-495D-9734-B50CB3130009}.Release|x86.Build.0 = Release|x86
+		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Debug|ARM.ActiveCfg = Debug|ARM
+		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Debug|ARM.Build.0 = Debug|ARM
+		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Debug|x86.ActiveCfg = Debug|x86
+		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Debug|x86.Build.0 = Debug|x86
+		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Release|ARM.ActiveCfg = Release|ARM
+		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Release|ARM.Build.0 = Release|ARM
+		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Release|x86.ActiveCfg = Release|x86
+		{149D7175-5E30-49F4-BFD7-6ACF2C211DCC}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

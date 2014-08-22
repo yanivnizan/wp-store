@@ -29,12 +29,14 @@ namespace SoomlaWpStore
      *
      * @param storeAssets the definition of your application specific assets.
      */
-    public bool initialize(IStoreAssets storeAssets) {
+    public bool initialize(IStoreAssets storeAssets, bool testMode) {
         if (mInitialized) {
             String err = "SoomlaStore is already initialized. You can't initialize it twice!";
             handleErrorResult(err);
             return false;
         }
+
+        StoreConfig.STORE_TEST_MODE = testMode;
 
         StoreManager.OnItemPurchasedCB += handleSuccessfulPurchase;
         StoreManager.OnItemPurchaseCancelCB += handleCancelledPurchase;
@@ -74,15 +76,31 @@ namespace SoomlaWpStore
 
         EventManager.GetInstance().OnRestoreTransactionsStartedEvent(this, new RestoreTransactionsStartedEventArgs());
 
-        foreach (var item in StoreManager.licInfos.ProductLicenses)
+        if (StoreConfig.STORE_TEST_MODE)
         {
-            if (item.Value.IsActive)
+            foreach (var item in StoreManager.licInfosMock.ProductLicenses)
             {
-                SoomlaUtils.LogDebug(TAG, "Got owned item: " + item.Value.ProductId);
+                if (item.Value.IsActive)
+                {
+                    SoomlaUtils.LogDebug(TAG, "Got owned item: " + item.Value.ProductId);
 
-                handleSuccessfulPurchase(item.Value.ProductId);
+                    handleSuccessfulPurchase(item.Value.ProductId);
+                }
             }
         }
+        else
+        {
+            foreach (var item in StoreManager.licInfos.ProductLicenses)
+            {
+                if (item.Value.IsActive)
+                {
+                    SoomlaUtils.LogDebug(TAG, "Got owned item: " + item.Value.ProductId);
+
+                    handleSuccessfulPurchase(item.Value.ProductId);
+                }
+            }
+        }
+        
 
 
         EventManager.GetInstance().OnRestoreTransactionsFinishedEvent(this, new RestoreTransactionsFinishedEventArgs(true));
