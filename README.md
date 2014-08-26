@@ -61,7 +61,7 @@ $ git clone --recursive git@github.com:soomla/wp-store.git
 	bool testMode = true;
     Soomla.Initialize("YOU_ENCRYPTION_KEY",testMode);
     ```
-    
+
 4. Create your own implementation of _IStoreAssets_ in order to describe your specific game's assets ([example](https://github.com/soomla/wp-store/blob/master//wp-store-example/wp-store-example/StoreAssets.cs)). Initialize _SoomlaStore_ with the class you just created:
 
     ```cs
@@ -72,7 +72,11 @@ $ git clone --recursive git@github.com:soomla/wp-store.git
 
     > You can initialize _SoomlaStore_ in the "MainPage()" function of a 'PhoneApplicationPage'.
 
-5. You'll need an event handler in order to be notified about in-app purchasing related events. refer to the [Event Handling](https://github.com/soomla/wp-store#event-handling) section for more information.
+5. Write IAPMock.xml ([example](https://github.com/soomla/wp-store-example/blob/master//wp-store-example/wp-store-example/IAPMock.xml)) and save it in the root folder of your project.
+
+This file is used in TestMode to simulate the Windows Store informations. YOU DON'T NEED TO PUBLISH YOUR APP IN THE BETA PROGRAM TO TEST IAP!
+
+6. You'll need an event handler in order to be notified about in-app purchasing related events. refer to the [Event Handling](https://github.com/soomla/wp-store#event-handling) section for more information.
 
 And that's it ! You have storage and in-app purchasing capabilities... ALL-IN-ONE.
 
