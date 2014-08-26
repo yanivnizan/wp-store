@@ -29,15 +29,17 @@ wp-store is the Windows Phone 8 flavor of SOOMLA's Store Module.
 
 ## Download
 
-####Dll:
+The core module [soomla-wp-core master](https://github.com/soomla/soomla-wp-core/archive/master.zip)  
+The store module [wp-store master](https://github.com/soomla/wp-store/archive/master.zip)
 
-[soomla-wp-core master](https://github.com/soomla/soomla-wp-core/archive/master.zip)  
-[wp-store master](https://github.com/soomla/wp-store/archive/master)
+>When downloading Zip instead of cloning recursive, don't forget to add the soomla-wp-core module on the "submodules\soomla-wp-core" folder or you will have to referenced soomla-wp-core manually in the example and wp-store projects.
 
 ## Debugging
 
-If you want to see full debug messages from wp-store you just need to check the box that says "Debug Messages" in the SOOMLA Settings.
-Unity debug messages will only be printed out if you build the project with _Development Build_ checked.
+If you want to see full debug messages from wp-store you just need add before initialization :
+	```cs
+	SoomlaConfig.logDebug = true;
+	```
 
 ## Cloning
 
@@ -50,8 +52,8 @@ $ git clone --recursive git@github.com:soomla/wp-store.git
 ## Getting Started
 
 1. Download the [soomla-wp-core](https://github.com/soomla/soomla-wp-core/archive/master.zip) and [wp-store](https://github.com/soomla/wp-store/archive/master.zip)
-2. Add wp-store.csproj and soomla-wp_core.csproj to your solution and reference them in your project.
-3. Initialize the soomla-wp-core Module with the encryption key and the testMode switch
+2. Add wp-store.csproj and soomla-wp-core.csproj to your solution and reference them in your project.
+3. Initialize the soomla-wp-core module with the encryption key and the testMode switch
 	```cs
 	bool testMode = true;
     Soomla.Initialize("YOU_ENCRYPTION_KEY",testMode);
@@ -165,7 +167,7 @@ StoreEvents.GetInstance().OnCurrencyBalanceChangedEvent += new CurrencyBalanceCh
 ````
 before
 ````
-Soomla.SoomlaStore.Initialize(new Soomla.Example.MuffinRushAssets());
+SoomlaStore.Initialize(new Soomla.Example.MuffinRushAssets());
 ````
 
 Contribution

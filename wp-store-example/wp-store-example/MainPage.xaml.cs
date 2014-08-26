@@ -39,19 +39,18 @@ namespace wp_store_example
         public MainPage()
         {
             InitializeComponent();
-            Soomla.initialize("this_is_my_secret");
-            // Exemple de code pour la localisation d'ApplicationBar
-            //BuildLocalizedApplicationBar();
-            SoomlaStore.GetInstance().initialize(new StoreAssets(),true);
-
             StoreEvents.GetInstance().OnCurrencyBalanceChangedEvent += new CurrencyBalanceChangedEventHandler(UpdateCurrencyBalance);
             StoreEvents.GetInstance().OnGoodBalanceChangedEvent += new GoodBalanceChangedEventHandler(UpdateGoodBalance);
             StoreEvents.GetInstance().OnGoodEquippedEvent += new GoodEquippedEventHandler(UpdateGoodEquip);
             StoreEvents.GetInstance().OnGoodUnEquippedEvent += new GoodUnEquippedEventHandler(UpdateGoodUnequip);
 
+            SoomlaConfig.logDebug = true;
+            Soomla.initialize("this_is_my_secret");
+            SoomlaStore.GetInstance().initialize(new StoreAssets(), true);
+
+            /// Update the currencies balance on the GUI
             UpdateCurrencyBalance(null, 0,0);
             buildShop();
-            
         }
 
         private void buildShop()
