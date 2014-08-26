@@ -72,7 +72,7 @@ $ git clone --recursive git@github.com:soomla/wp-store.git
 
     > You can initialize _SoomlaStore_ in the "MainPage()" function of a 'PhoneApplicationPage'.
 
-5. Write IAPMock.xml ([example](https://github.com/soomla/wp-store/blob/master//wp-store-example/wp-store-example/IAPMock.xml)) and save it in the root folder of your project.
+5. Write IAPMock.xml ([example](https://github.com/soomla/wp-store/blob/master/wp-store-example/wp-store-example/IAPMock.xml)) and save it in the root folder of your project.
 
 	This file is used in TestMode to simulate the Windows Store informations. 
 
