@@ -74,7 +74,9 @@ $ git clone --recursive git@github.com:soomla/wp-store.git
 
 5. Write IAPMock.xml ([example](https://github.com/soomla/wp-store-example/blob/master//wp-store-example/wp-store-example/IAPMock.xml)) and save it in the root folder of your project.
 
-This file is used in TestMode to simulate the Windows Store informations. YOU DON'T NEED TO PUBLISH YOUR APP IN THE BETA PROGRAM TO TEST IAP!
+	This file is used in TestMode to simulate the Windows Store informations. 
+
+	>YOU DON'T NEED TO PUBLISH YOUR APP IN THE WINDOWS STORE BETA PROGRAM TO TEST IAP!
 
 6. You'll need an event handler in order to be notified about in-app purchasing related events. refer to the [Event Handling](https://github.com/soomla/wp-store#event-handling) section for more information.
 
