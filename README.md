@@ -61,6 +61,7 @@ $ git clone --recursive git@github.com:soomla/wp-store.git
 	bool testMode = true;
     Soomla.Initialize("YOU_ENCRYPTION_KEY",testMode);
     ```
+    
 4. Create your own implementation of _IStoreAssets_ in order to describe your specific game's assets ([example](https://github.com/soomla/wp-store/blob/master//wp-store-example/wp-store-example/StoreAssets.cs)). Initialize _SoomlaStore_ with the class you just created:
 
     ```cs
