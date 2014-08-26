@@ -1,5 +1,5 @@
 
-**unity3d-store Documentation Conventions**
+**wp-store Documentation Conventions**
 =====================
 
 
