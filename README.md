@@ -1,7 +1,8 @@
 wp-store
 ========
 
-Windows Phone 8 F2P game economy library. 
+Windows Phone 8 F2P game economy library.
+
 Part of The SOOMLA Project - framework for virtual economies in mobile games.  http://project.soom.la
 
 *This project is a part of The [SOOMLA](http://www.soom.la) Framework which is a series of open source initiatives with a joint goal to help mobile game developers do more together. SOOMLA encourages better game designing, economy modeling and faster development.*
@@ -27,7 +28,6 @@ wp-store is the Windows Phone 8 flavor of SOOMLA's Store Module.
 ## Economy Model
 ![SOOMLA's Economy Model](http://know.soom.la/img/tutorial_img/soomla_diagrams/EconomyModel.png)
 
-
 ## Download
 
 The core module [soomla-wp-core master](https://github.com/soomla/soomla-wp-core/archive/master.zip)  
@@ -37,11 +37,11 @@ The store module [wp-store master](https://github.com/soomla/wp-store/archive/ma
 
 ## Debugging
 
-If you want to see full debug messages from wp-store you just need add before initialization:
-	
-	```cs
-	SoomlaConfig.logDebug = true;
-	```
+If you want to see full debug messages from wp-store you just need to add before initialization:
+
+```cs
+SoomlaConfig.logDebug = true;
+```	
 
 ## Cloning
 
