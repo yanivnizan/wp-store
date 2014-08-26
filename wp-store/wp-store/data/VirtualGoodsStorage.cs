@@ -22,10 +22,10 @@ import com.soomla.store.domain.VirtualItem;
 import com.soomla.store.domain.virtualGoods.EquippableVG;
 import com.soomla.store.domain.virtualGoods.UpgradeVG;
 import com.soomla.store.domain.virtualGoods.VirtualGood;
-import com.soomla.store.events.GoodBalanceChangedEvent;
-import com.soomla.store.events.GoodEquippedEvent;
-import com.soomla.store.events.GoodUnEquippedEvent;
-import com.soomla.store.events.GoodUpgradeEvent;
+import com.soomla.store.events.OnGoodBalanceChangedEvent;
+import com.soomla.store.events.OnGoodEquippedEvent;
+import com.soomla.store.events.OnGoodUnEquippedEvent;
+import com.soomla.store.events.OnGoodUpgradeEvent;
 import com.soomla.store.exceptions.VirtualItemNotFoundException;
 */
 using System;
@@ -76,7 +76,7 @@ public class VirtualGoodsStorage : VirtualItemStorage{
         KeyValueStorage.DeleteKeyValue(key);
 
         if (notify) {
-			EventManager.GetInstance().OnGoodUpgradeEvent(this,new GoodUpgradeEventArgs(good,null));
+			EventManager.GetInstance().PostGoodUpgradeEvent(good,null);
         }
     }
 
@@ -112,7 +112,7 @@ public class VirtualGoodsStorage : VirtualItemStorage{
         KeyValueStorage.SetValue(key, upItemId);
 
         if (notify) {
-			EventManager.GetInstance().OnGoodUpgradeEvent(this,new GoodUpgradeEventArgs(good,upgradeVG));
+			EventManager.GetInstance().PostGoodUpgradeEvent(good,upgradeVG);
         }
     }
 
@@ -221,8 +221,7 @@ public class VirtualGoodsStorage : VirtualItemStorage{
      * @{inheritDoc}
      */
     protected override void postBalanceChangeEvent(VirtualItem item, int balance, int amountAdded) {
-        EventManager.GetInstance().OnGoodBalanceChangedEvent(this,new GoodBalanceChangedEventArgs((VirtualGood)item,
-                balance, amountAdded));
+        EventManager.GetInstance().PostGoodBalanceChangedEvent((VirtualGood)item,balance, amountAdded);
     }
 
     /**
@@ -237,12 +236,12 @@ public class VirtualGoodsStorage : VirtualItemStorage{
         if (equip) {
             KeyValueStorage.SetValue(key, "");
             if (notify) {
-                EventManager.GetInstance().OnGoodEquippedEvent(this, new GoodEquippedEventArgs(good));
+                EventManager.GetInstance().PostGoodEquippedEvent(good);
             }
         } else {
             KeyValueStorage.DeleteKeyValue(key);
             if (notify) {
-                EventManager.GetInstance().OnGoodUnEquippedEvent(this, new GoodUnEquippedEventArgs(good));
+                EventManager.GetInstance().PostGoodUnEquippedEvent(good);
             }
         }
     }

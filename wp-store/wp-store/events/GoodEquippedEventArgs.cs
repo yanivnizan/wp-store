@@ -26,7 +26,7 @@ namespace SoomlaWpStore.events
      *  Example Inventory: { currency_coin: 100, Characters: Robot_X, Robot_Y }
      *  Suppose your user equips Robot_X.
      *  His/her new balance of Characters will be { Characters: Robot_Y }.
-     *  A <code>GoodEquippedEvent</code> is fired.
+     *  A <code>OnGoodEquippedEvent</code> is fired.
      */
     public class GoodEquippedEventArgs : EventArgs
     {

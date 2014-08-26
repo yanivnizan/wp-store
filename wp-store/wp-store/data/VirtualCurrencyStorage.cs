@@ -45,8 +45,7 @@ public class VirtualCurrencyStorage : VirtualItemStorage{
      * @{inheritDoc}
      */
     protected override void postBalanceChangeEvent(VirtualItem item, int balance, int amountAdded) {
-		EventManager.GetInstance().OnCurrencyBalanceChangedEvent(this,new CurrencyBalanceChangedEventArgs((VirtualCurrency) item,
-                balance, amountAdded));
+		EventManager.GetInstance().PostCurrencyBalanceChangedEvent((VirtualCurrency) item,balance, amountAdded);
     }
 
     private static String keyCurrencyBalance(String itemId) {

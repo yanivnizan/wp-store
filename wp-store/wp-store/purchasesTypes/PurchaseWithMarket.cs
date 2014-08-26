@@ -18,7 +18,7 @@
 //import com.soomla.store.SoomlaStore;
 //import com.soomla.SoomlaUtils;
 //import com.soomla.store.domain.MarketItem;
-//import com.soomla.store.events.ItemPurchaseStartedEvent;
+//import com.soomla.store.events.OnItemPurchaseStartedEvent;
 //import com.soomla.store.exceptions.InsufficientFundsException;
 using System;
 using SoomlaWpCore;
@@ -67,7 +67,7 @@ public class PurchaseWithMarket : PurchaseType {
                 + mMarketItem.getProductId());
         
         
-        EventManager.GetInstance().OnItemPurchaseStartedEvent(this,new ItemPurchaseStartedEventArgs(getAssociatedItem()));
+        EventManager.GetInstance().PostItemPurchaseStartedEvent(getAssociatedItem());
         
         try {
             SoomlaStore.GetInstance().buyWithMarket(mMarketItem, payload);

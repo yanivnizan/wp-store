@@ -31,12 +31,12 @@ namespace wp_store_example
             //BuildLocalizedApplicationBar();
             SoomlaStore.GetInstance().initialize(new StoreAssets(),true);
 
-            EventManager.GetInstance().CurrencyBalanceChangedEvent += new CurrencyBalanceChangedEventHandler(UpdateCurrencyBalance);
-            EventManager.GetInstance().GoodBalanceChangedEvent += new GoodBalanceChangedEventHandler(UpdateGoodBalance);
-            EventManager.GetInstance().GoodEquippedEvent += new GoodEquippedEventHandler(UpdateGoodEquip);
-            EventManager.GetInstance().GoodUnEquippedEvent += new GoodUnEquippedEventHandler(UpdateGoodUnequip);
+            EventManager.GetInstance().OnCurrencyBalanceChangedEvent += new CurrencyBalanceChangedEventHandler(UpdateCurrencyBalance);
+            EventManager.GetInstance().OnGoodBalanceChangedEvent += new GoodBalanceChangedEventHandler(UpdateGoodBalance);
+            EventManager.GetInstance().OnGoodEquippedEvent += new GoodEquippedEventHandler(UpdateGoodEquip);
+            EventManager.GetInstance().OnGoodUnEquippedEvent += new GoodUnEquippedEventHandler(UpdateGoodUnequip);
 
-            UpdateCurrencyBalance(null, null);
+            UpdateCurrencyBalance(null, 0,0);
             buildShop();
             
         }
@@ -201,29 +201,29 @@ namespace wp_store_example
             StoreInventory.unEquipVirtualGood(equipButton.CommandParameter.ToString());
         }
 
-        private void UpdateGoodEquip(Object o, GoodEquippedEventArgs e)
+        private void UpdateGoodEquip(EquippableVG good)
         {
-            Button equipB = (Button)MainStackPanel.FindName(e.getGood().getItemId() + "equip");
+            Button equipB = (Button)MainStackPanel.FindName(good.getItemId() + "equip");
             equipB.Content = "unequip";
             equipB.Click -= equipItem;
             equipB.Click += unequipItem;
         }
 
-        private void UpdateGoodUnequip(Object o, GoodUnEquippedEventArgs e)
+        private void UpdateGoodUnequip(EquippableVG good)
         {
-            Button equipB = (Button)MainStackPanel.FindName(e.getGood().getItemId() + "equip");
+            Button equipB = (Button)MainStackPanel.FindName(good.getItemId() + "equip");
             equipB.Content = "equip";
             equipB.Click += equipItem;
             equipB.Click -= unequipItem;
         }
 
-        private void UpdateGoodBalance(Object o, GoodBalanceChangedEventArgs e)
+        private void UpdateGoodBalance(VirtualGood good, int balance, int amountAdded)
         {
-            TextBlock balance = (TextBlock)MainStackPanel.FindName(e.getGood().getItemId() + "balance");
-            balance.Text = "balance: "+e.getBalance().ToString();
+            TextBlock balanceText = (TextBlock)MainStackPanel.FindName(good.getItemId() + "balance");
+            balanceText.Text = "balance: " + balance.ToString();
         }
 
-        private void UpdateCurrencyBalance(Object o, CurrencyBalanceChangedEventArgs e)
+        private void UpdateCurrencyBalance(VirtualCurrency currency, int balance, int amountAdded)
         {
             WeakCurrency.Text = StoreInventory.getVirtualItemBalance(StoreAssets.WEAK_CURRENCY_ITEM_ID).ToString();
             StrongCurrency.Text = StoreInventory.getVirtualItemBalance(StoreAssets.STRONG_CURRENCY_ITEM_ID).ToString();

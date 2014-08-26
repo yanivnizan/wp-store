@@ -26,7 +26,7 @@ namespace SoomlaWpStore.events
      *  Example Inventory: { currency_coin: 100, Characters: Robot_X_1 }
      *  Suppose your user upgrades "Characters". Robot_X_1 is the first Robot_X in the series.
      *  After the upgrade, his/her new balance of Characters will be { Characters: Robot_X_2 }.
-     *  A <code>GoodUpgradeEvent</code> is fired.
+     *  A <code>OnGoodUpgradeEvent</code> is fired.
      */
     public class GoodUpgradeEventArgs : EventArgs
     {

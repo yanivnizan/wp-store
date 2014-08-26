@@ -24,7 +24,7 @@ using SoomlaWpStore.domain.virtualCurrencies;
  *  Example Inventory: { currency_coin: 100, green_hat: 3, blue_hat: 5 }
  *  Suppose your user buys something for 10 "Coins".
  *  His/her new balance of currency_coin will now be 90.
- *  A <code>CurrencyBalanceChangedEvent</code> is fired.
+ *  A <code>OnCurrencyBalanceChangedEvent</code> is fired.
  */
 namespace SoomlaWpStore.events
 {

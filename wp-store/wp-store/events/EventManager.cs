@@ -3,27 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SoomlaWpStore.events;
 using SoomlaWpCore;
+using SoomlaWpStore.domain;
+using SoomlaWpStore.events;
+using SoomlaWpStore.domain.virtualGoods;
+using SoomlaWpStore.domain.virtualCurrencies;
 namespace SoomlaWpStore.events
 {
-    public delegate void ItemPurchaseStartedEventHandler(Object o, ItemPurchaseStartedEventArgs e);
-    public delegate void ItemPurchasedEventHandler(Object o, ItemPurchasedEventArgs e);
-    public delegate void SoomlaStoreInitializedEventHandler(Object o, EventArgs e);
-    public delegate void UnexpectedStoreErrorEventHandler(Object o, UnexpectedStoreErrorEventArgs e);
-    public delegate void GoodUpgradeEventHandler(Object o, GoodUpgradeEventArgs e);
-    public delegate void GoodBalanceChangedEventHandler(Object o, GoodBalanceChangedEventArgs e);
-    public delegate void GoodEquippedEventHandler(Object o, GoodEquippedEventArgs e);
-    public delegate void GoodUnEquippedEventHandler(Object o, GoodUnEquippedEventArgs e);
-    public delegate void CurrencyBalanceChangedEventHandler(Object o, CurrencyBalanceChangedEventArgs e);
-    public delegate void MarketItemsRefreshStartedEventHandler(Object o, MarketItemsRefreshStartedEventArgs e);
-    public delegate void MarketItemsRefreshFinishedEventHandler(Object o, MarketItemsRefreshFinishedEventArgs e);
-    public delegate void RestoreTransactionsStartedEventHandler(Object o, RestoreTransactionsStartedEventArgs e);
-    public delegate void RestoreTransactionsFinishedEventHandler(Object o, RestoreTransactionsFinishedEventArgs e);
-    public delegate void MarketPurchaseStartedEventHandler(Object o, MarketPurchaseStartedEventArgs e);
-    public delegate void MarketPurchaseEventHandler(Object o, MarketPurchaseEventArgs e);
-    public delegate void MarketPurchaseCancelledEventHandler(Object o, MarketPurchaseCancelledEventArgs e);
-    
+    public delegate void ItemPurchaseStartedEventHandler(PurchasableVirtualItem purchasableVirtualItem);
+    public delegate void ItemPurchasedEventHandler(PurchasableVirtualItem purchasableVirtualItem, String payload);
+    public delegate void SoomlaStoreInitializedEventHandler();
+    public delegate void UnexpectedStoreErrorEventHandler(String message);
+    public delegate void GoodUpgradeEventHandler(VirtualGood good, UpgradeVG upgradeVG);
+    public delegate void GoodBalanceChangedEventHandler(VirtualGood good, int balance, int amountAdded);
+    public delegate void GoodEquippedEventHandler(EquippableVG good);
+    public delegate void GoodUnEquippedEventHandler(EquippableVG good);
+    public delegate void CurrencyBalanceChangedEventHandler(VirtualCurrency currency, int balance, int amountAdded);
+    public delegate void MarketItemsRefreshStartedEventHandler();
+    public delegate void MarketItemsRefreshFinishedEventHandler(List<MarketItem> marketItems);
+    public delegate void RestoreTransactionsStartedEventHandler();
+    public delegate void RestoreTransactionsFinishedEventHandler(bool success);
+    public delegate void MarketPurchaseStartedEventHandler(PurchasableVirtualItem purchasableVirtualItem);
+    public delegate void MarketPurchaseEventHandler(PurchasableVirtualItem purchasableVirtualItem, String payload,String token);
+    public delegate void MarketPurchaseCancelledEventHandler(PurchasableVirtualItem purchasableVirtualItem);
+
     public class EventManager
     {
         public static EventManager instance;
@@ -36,169 +39,169 @@ namespace SoomlaWpStore.events
             return instance;
         }
         
-        public event ItemPurchaseStartedEventHandler ItemPurchaseStartedEvent;
-        public void OnItemPurchaseStartedEvent(Object o, ItemPurchaseStartedEventArgs e)
+        public event ItemPurchaseStartedEventHandler OnItemPurchaseStartedEvent;
+        public void PostItemPurchaseStartedEvent(PurchasableVirtualItem purchasableVirtualItem)
         {
-            LogEvent(o, "ItemPurchaseStarted");
-            if (ItemPurchaseStartedEvent != null)
+            LogEvent("ItemPurchaseStarted");
+            if (OnItemPurchaseStartedEvent != null)
             {
-                ItemPurchaseStartedEvent(o, e);
+                OnItemPurchaseStartedEvent(purchasableVirtualItem);
             }
         }
 
-        public event ItemPurchasedEventHandler ItemPurchasedEvent;
-        public void OnItemPurchasedEvent(Object o, ItemPurchasedEventArgs e)
+        public event ItemPurchasedEventHandler OnItemPurchasedEvent;
+        public void PostItemPurchasedEvent(PurchasableVirtualItem purchasableVirtualItem, String payload)
         {
-            LogEvent(o, "ItemPurchased");
-            if (ItemPurchasedEvent != null)
+            LogEvent("ItemPurchased");
+            if (OnItemPurchasedEvent != null)
             {
-                ItemPurchasedEvent(o, e);
+                OnItemPurchasedEvent(purchasableVirtualItem,payload);
             }
         }
 
-        public event SoomlaStoreInitializedEventHandler SoomlaStoreInitializedEvent;
-        public void OnSoomlaStoreInitializedEvent(Object o, EventArgs e)
+        public event SoomlaStoreInitializedEventHandler OnSoomlaStoreInitializedEvent;
+        public void PostSoomlaStoreInitializedEvent()
         {
-            LogEvent(o, "SoomlaStoreInitialized");
-            if (SoomlaStoreInitializedEvent != null)
+            LogEvent("SoomlaStoreInitialized");
+            if (OnSoomlaStoreInitializedEvent != null)
             {
-                SoomlaStoreInitializedEvent(o, null);
+                OnSoomlaStoreInitializedEvent();
             }
         }
 
-        public event UnexpectedStoreErrorEventHandler UnexpectedStoreErrorEvent;
-        public void OnUnexpectedStoreErrorEvent(Object o, UnexpectedStoreErrorEventArgs e)
+        public event UnexpectedStoreErrorEventHandler OnUnexpectedStoreErrorEvent;
+        public void PostUnexpectedStoreErrorEvent(String message)
         {
-            LogEvent(o, "UnexpectedStoreError");
-            if (UnexpectedStoreErrorEvent != null)
+            LogEvent("UnexpectedStoreError message:"+message);
+            if (OnUnexpectedStoreErrorEvent != null)
             {
-                UnexpectedStoreErrorEvent(o, e);
+                OnUnexpectedStoreErrorEvent(message);
             }
         }
 
-        public event GoodUpgradeEventHandler GoodUpgradeEvent;
-        public void OnGoodUpgradeEvent(Object o, GoodUpgradeEventArgs e)
+        public event GoodUpgradeEventHandler OnGoodUpgradeEvent;
+        public void PostGoodUpgradeEvent(VirtualGood good, UpgradeVG upgradeVG)
         {
-            LogEvent(o, "GoodUpgrade");
-            if (GoodUpgradeEvent != null)
+            LogEvent("GoodUpgrade");
+            if (OnGoodUpgradeEvent != null)
             {
-                GoodUpgradeEvent(o, e);
+                OnGoodUpgradeEvent(good, upgradeVG);
             }
         }
 
-        public event GoodBalanceChangedEventHandler GoodBalanceChangedEvent;
-        public void OnGoodBalanceChangedEvent(Object o, GoodBalanceChangedEventArgs e)
+        public event GoodBalanceChangedEventHandler OnGoodBalanceChangedEvent;
+        public void PostGoodBalanceChangedEvent(VirtualGood good, int balance, int amountAdded)
         {
-            LogEvent(o, "GoodBalanceChanged");
-            if (GoodBalanceChangedEvent != null)
+            LogEvent("GoodBalanceChanged");
+            if (OnGoodBalanceChangedEvent != null)
             {
-                GoodBalanceChangedEvent(o, e);
+                OnGoodBalanceChangedEvent(good, balance, amountAdded);
             }
         }
 
-        public event GoodEquippedEventHandler GoodEquippedEvent;
-        public void OnGoodEquippedEvent(Object o, GoodEquippedEventArgs e)
+        public event GoodEquippedEventHandler OnGoodEquippedEvent;
+        public void PostGoodEquippedEvent(EquippableVG good)
         {
-            LogEvent(o, "GoodEquipped");
-            if (GoodEquippedEvent != null)
+            LogEvent("GoodEquipped");
+            if (OnGoodEquippedEvent != null)
             {
-                GoodEquippedEvent(o, e);
+                OnGoodEquippedEvent(good);
             }
         }
 
-        public event GoodUnEquippedEventHandler GoodUnEquippedEvent;
-        public void OnGoodUnEquippedEvent(Object o, GoodUnEquippedEventArgs e)
+        public event GoodUnEquippedEventHandler OnGoodUnEquippedEvent;
+        public void PostGoodUnEquippedEvent(EquippableVG good)
         {
-            LogEvent(o, "GoodUnEquipped");
-            if (GoodUnEquippedEvent != null)
+            LogEvent("GoodUnEquipped");
+            if (OnGoodUnEquippedEvent != null)
             {
-                GoodUnEquippedEvent(o, e);
+                OnGoodUnEquippedEvent(good);
             }
         }
 
-        public event CurrencyBalanceChangedEventHandler CurrencyBalanceChangedEvent;
-        public void OnCurrencyBalanceChangedEvent(Object o, CurrencyBalanceChangedEventArgs e)
+        public event CurrencyBalanceChangedEventHandler OnCurrencyBalanceChangedEvent;
+        public void PostCurrencyBalanceChangedEvent(VirtualCurrency currency, int balance, int amountAdded)
         {
-            LogEvent(o, "CurrencyBalanceChanged");
-            if (CurrencyBalanceChangedEvent != null)
+            LogEvent("CurrencyBalanceChanged");
+            if (OnCurrencyBalanceChangedEvent != null)
             {
-                CurrencyBalanceChangedEvent(o, e);
+                OnCurrencyBalanceChangedEvent(currency, balance, amountAdded);
             }
         }
 
-        public event MarketItemsRefreshStartedEventHandler MarketItemsRefreshStartedEvent;
-        public void OnMarketItemsRefreshStartedEvent(Object o, MarketItemsRefreshStartedEventArgs e)
+        public event MarketItemsRefreshStartedEventHandler OnMarketItemsRefreshStartedEvent;
+        public void PostMarketItemsRefreshStartedEvent()
         {
-            LogEvent(o, "MarketItemsRefreshStarted");
-            if (MarketItemsRefreshStartedEvent != null)
+            LogEvent("MarketItemsRefreshStarted");
+            if (OnMarketItemsRefreshStartedEvent != null)
             {
-                MarketItemsRefreshStartedEvent(o, e);
+                OnMarketItemsRefreshStartedEvent();
             }
         }
 
-        public event MarketItemsRefreshFinishedEventHandler MarketItemsRefreshFinishedEvent;
-        public void OnMarketItemsRefreshFinishedEvent(Object o, MarketItemsRefreshFinishedEventArgs e)
+        public event MarketItemsRefreshFinishedEventHandler OnMarketItemsRefreshFinishedEvent;
+        public void PostMarketItemsRefreshFinishedEvent(List<MarketItem> marketItems)
         {
-            LogEvent(o, "MarketItemsRefreshFinished");
-            if (MarketItemsRefreshFinishedEvent != null)
+            LogEvent("MarketItemsRefreshFinished");
+            if (OnMarketItemsRefreshFinishedEvent != null)
             {
-                MarketItemsRefreshFinishedEvent(o, e);
+                OnMarketItemsRefreshFinishedEvent(marketItems);
             }
         }
 
-        public event RestoreTransactionsStartedEventHandler RestoreTransactionsStartedEvent;
-        public void OnRestoreTransactionsStartedEvent(Object o, RestoreTransactionsStartedEventArgs e)
+        public event RestoreTransactionsStartedEventHandler OnRestoreTransactionsStartedEvent;
+        public void PostRestoreTransactionsStartedEvent()
         {
-            LogEvent(o, "RestoreTransactionsStarted");
-            if (RestoreTransactionsStartedEvent != null)
+            LogEvent("RestoreTransactionsStarted");
+            if (OnRestoreTransactionsStartedEvent != null)
             {
-                RestoreTransactionsStartedEvent(o, e);
+                OnRestoreTransactionsStartedEvent();
             }
         }
 
-        public event RestoreTransactionsFinishedEventHandler RestoreTransactionsFinishedEvent;
-        public void OnRestoreTransactionsFinishedEvent(Object o, RestoreTransactionsFinishedEventArgs e)
+        public event RestoreTransactionsFinishedEventHandler OnRestoreTransactionsFinishedEvent;
+        public void PostRestoreTransactionsFinishedEvent(bool success)
         {
-            LogEvent(o, "RestoreTransactionsFinished");
-            if (RestoreTransactionsFinishedEvent != null)
+            LogEvent("RestoreTransactionsFinished");
+            if (OnRestoreTransactionsFinishedEvent != null)
             {
-                RestoreTransactionsFinishedEvent(o, e);
+                OnRestoreTransactionsFinishedEvent(success);
             }
         }
 
-        public event MarketPurchaseStartedEventHandler MarketPurchaseStartedEvent;
-        public void OnMarketPurchaseStartedEvent(Object o, MarketPurchaseStartedEventArgs e)
+        public event MarketPurchaseStartedEventHandler OnMarketPurchaseStartedEvent;
+        public void PostMarketPurchaseStartedEvent(PurchasableVirtualItem purchasableVirtualItem)
         {
-            LogEvent(o, "MarketPurchaseStarted");
-            if (MarketPurchaseStartedEvent != null)
+            LogEvent("MarketPurchaseStarted");
+            if (OnMarketPurchaseStartedEvent != null)
             {
-                MarketPurchaseStartedEvent(o, e);
+                OnMarketPurchaseStartedEvent(purchasableVirtualItem);
             }
         }
 
-        public event MarketPurchaseEventHandler MarketPurchaseEvent;
-        public void OnMarketPurchaseEvent(Object o, MarketPurchaseEventArgs e)
+        public event MarketPurchaseEventHandler OnMarketPurchaseEvent;
+        public void PostMarketPurchaseEvent(PurchasableVirtualItem purchasableVirtualItem, String payload, String token)
         {
-            LogEvent(o, "MarketPurchase");
-            if (MarketPurchaseEvent != null)
+            LogEvent("MarketPurchase");
+            if (OnMarketPurchaseEvent != null)
             {
-                MarketPurchaseEvent(o, e);
+                OnMarketPurchaseEvent(purchasableVirtualItem, payload, token);
             }
         }
 
-        public event MarketPurchaseCancelledEventHandler MarketPurchaseCancelledEvent;
-        public void OnMarketPurchaseCancelledEvent(Object o, MarketPurchaseCancelledEventArgs e)
+        public event MarketPurchaseCancelledEventHandler OnMarketPurchaseCancelledEvent;
+        public void PostMarketPurchaseCancelledEvent(PurchasableVirtualItem purchasableVirtualItem)
         {
-            LogEvent(o, "MarketPurchaseCancelled");
-            if (MarketPurchaseCancelledEvent != null)
+            LogEvent("MarketPurchaseCancelled");
+            if (OnMarketPurchaseCancelledEvent != null)
             {
-                MarketPurchaseCancelledEvent(o, e);
+                OnMarketPurchaseCancelledEvent(purchasableVirtualItem);
             }
         }
 
-        private void LogEvent(Object o, String eventName)
+        private void LogEvent(String eventName)
         {
-            SoomlaUtils.LogDebug(TAG, "Event " + eventName + " raise from " + o.GetType().ToString());
+            SoomlaUtils.LogDebug(TAG, "Event " + eventName + " raise");
         }
 
         private const String TAG = "SOOMLA EventManager"; //used for Log messages

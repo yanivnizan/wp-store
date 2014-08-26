@@ -29,8 +29,8 @@ import com.soomla.store.data.StorageManager;
 import com.soomla.store.data.StoreInfo;
 import com.soomla.store.data.VirtualItemStorage;
 import com.soomla.store.domain.VirtualItem;
-import com.soomla.store.events.ItemPurchaseStartedEvent;
-import com.soomla.store.events.ItemPurchasedEvent;
+import com.soomla.store.events.OnItemPurchaseStartedEvent;
+import com.soomla.store.events.OnItemPurchasedEvent;
 import com.soomla.store.exceptions.InsufficientFundsException;
 import com.soomla.store.exceptions.VirtualItemNotFoundException;
 */
@@ -76,7 +76,7 @@ public class PurchaseWithVirtualItem : PurchaseType {
             return;
         }
 
-		EventManager.GetInstance().OnItemPurchaseStartedEvent(this,new ItemPurchaseStartedEventArgs(getAssociatedItem()));
+		EventManager.GetInstance().PostItemPurchaseStartedEvent(getAssociatedItem());
 
         VirtualItemStorage storage = StorageManager.getVirtualItemStorage(item);
 
@@ -89,8 +89,8 @@ public class PurchaseWithVirtualItem : PurchaseType {
         storage.remove(item, mAmount);
 
         getAssociatedItem().give(1);
-        //BusProvider.getInstance().post(new ItemPurchasedEvent(getAssociatedItem(), payload));
-		EventManager.GetInstance().OnItemPurchasedEvent(this,new ItemPurchasedEventArgs(getAssociatedItem(), payload));
+        //BusProvider.getInstance().post(new OnItemPurchasedEvent(getAssociatedItem(), payload));
+		EventManager.GetInstance().PostItemPurchasedEvent(getAssociatedItem(), payload);
     }
 
 
