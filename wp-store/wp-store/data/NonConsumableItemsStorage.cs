@@ -20,9 +20,8 @@ using SoomlaWpStore.domain;
 
 namespace SoomlaWpStore.data 
 {
-    /**
-     * This class provides basic storage operations on the Market's MANAGED items.
-     */
+
+/// <summary>   This class provides basic storage operations on the Market's MANAGED items. </summary>
 public class NonConsumableItemsStorage {
 
     /**
@@ -31,12 +30,11 @@ public class NonConsumableItemsStorage {
     public NonConsumableItemsStorage() {
     }
 
-    /**
-     * Checks if the given {@link NonConsumableItem} exists.
-     *
-     * @param nonConsumableItem the non-consumable to check if exists.
-     * @return true if the given item exists, false otherwise.
-     */
+    /// <summary>   Checks if the given <c>NonConsumableItem</c> exists. </summary>
+    ///
+    /// <param name="nonConsumableItem">    The non consumable item. </param>
+    ///
+    /// <returns>   true if it succeeds, false if it fails. </returns>
     public bool nonConsumableItemExists(NonConsumableItem nonConsumableItem){
 
         SoomlaUtils.LogDebug(TAG, "Checking if the given MANAGED item exists.");
@@ -45,16 +43,15 @@ public class NonConsumableItemsStorage {
         String key = keyNonConsExists(itemId);
 
         String val = KeyValueStorage.GetValue(key);
-
+        
         return val != null;
     }
 
-    /**
-     * Adds the given non-consumable item to the storage.
-     *
-     * @param nonConsumableItem the required non-consumable item.
-     * @return true
-     */
+    /// <summary>   Adds the given non-consumable item to the storage. </summary>
+    ///
+    /// <param name="nonConsumableItem">    The non consumable item. </param>
+    ///
+    /// <returns>   true if it succeeds, false if it fails. </returns>
     public bool add(NonConsumableItem nonConsumableItem){
         SoomlaUtils.LogDebug(TAG, "Adding " + nonConsumableItem.getItemId());
 
@@ -66,12 +63,11 @@ public class NonConsumableItemsStorage {
         return true;
     }
 
-    /**
-     * Removes the given non-consumable item from the storage.
-     *
-     * @param nonConsumableItem the required non-consumable item.
-     * @return false
-     */
+    /// <summary>   Removes the given nonConsumableItem. </summary>
+    ///
+    /// <param name="nonConsumableItem">    The non consumable item. </param>
+    ///
+    /// <returns>   true if it succeeds, false if it fails. </returns>
     public bool remove(NonConsumableItem nonConsumableItem){
         SoomlaUtils.LogDebug(TAG, "Removing " + nonConsumableItem.getName());
 
@@ -85,7 +81,6 @@ public class NonConsumableItemsStorage {
 
 
     /** Private Members **/
-
     private const String TAG = "SOOMLA NonConsumableItemsStorage"; //used for Log messages
 
     private static String keyNonConsExists(String productId) {

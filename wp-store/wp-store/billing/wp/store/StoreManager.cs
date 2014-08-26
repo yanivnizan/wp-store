@@ -18,7 +18,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using SoomlaWpCore;
-using SoomlaWpStore.events;
+
 
 
 using MockIAPLib;
@@ -64,9 +64,10 @@ namespace SoomlaWpStore.billing.wp.store
             }
         }
 
+        /// <summary>   Loads Windows Store IAP informations. </summary>
         public async void LoadListingInfo()
         {
-            EventManager.GetInstance().PostMarketItemsRefreshStartedEvent();
+            StoreEvents.GetInstance().PostMarketItemsRefreshStartedEvent();
             try
             {
 
@@ -145,12 +146,12 @@ namespace SoomlaWpStore.billing.wp.store
             }
             catch (Exception e)
             {
-                
+                SoomlaUtils.LogDebug(TAG,e.Message);
             }
 
             OnListingLoadedCB(marketProductInfos);
         }
-
+        /// <summary>   Setup the Windows Store test mode by loading the IAPMock.xml file at the root path. </summary>
         private void SetupMockIAP()
         {
             MockIAP.Init();
@@ -171,7 +172,9 @@ namespace SoomlaWpStore.billing.wp.store
             }
             return instance;
         }
-
+        /// <summary>   Launch the purchase flow for the specified productid. </summary>
+        ///
+        /// <param name="productId">    Identifier for the product. </param>
         public void PurchaseProduct(string productId)
         {
             if (Dispatcher.InvokeOnUIThread == null)
@@ -194,7 +197,7 @@ namespace SoomlaWpStore.billing.wp.store
             }
         }
 
-        public async void DoPurchase(string productId)
+        private async void DoPurchase(string productId)
         {
             try
             {
@@ -234,7 +237,9 @@ namespace SoomlaWpStore.billing.wp.store
                 OnItemPurchaseCancelCB(productId, true);
             }
         }
-
+        /// <summary>   Consumes a MANAGED product. </summary>
+        ///
+        /// <param name="productId">    Identifier for the product. </param>
         public void Consume(string productId)
         {
             SoomlaUtils.LogDebug(TAG, "WStorePlugin consume " + productId);

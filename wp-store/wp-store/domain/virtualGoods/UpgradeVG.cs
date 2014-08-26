@@ -1,18 +1,16 @@
-/*
- * Copyright (C) 2012-2014 Soomla Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/// Copyright (C) 2012-2014 Soomla Inc.
+///
+/// Licensed under the Apache License, Version 2.0 (the "License");
+/// you may not use this file except in compliance with the License.
+/// You may obtain a copy of the License at
+///
+///      http://www.apache.org/licenses/LICENSE-2.0
+///
+/// Unless required by applicable law or agreed to in writing, software
+/// distributed under the License is distributed on an "AS IS" BASIS,
+/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+/// See the License for the specific language governing permissions and
+/// limitations under the License.
 
 using System;
 using SoomlaWpCore;
@@ -122,7 +120,7 @@ public class UpgradeVG : LifetimeVG {
             jsonObject.Add(StoreJSONConsts.VGU_NEXT_ITEMID, String.IsNullOrEmpty(mNextItemId) ? ""
                     : mNextItemId);
         } catch (Exception e) {
-            SoomlaUtils.LogError(TAG, "An error occurred while generating JSON object.");
+            SoomlaUtils.LogError(TAG, "An error occurred while generating JSON object." + " " + e.Message);
         }
 
         return jsonObject;
@@ -145,7 +143,7 @@ public class UpgradeVG : LifetimeVG {
             good = (VirtualGood)StoreInfo.getVirtualItem(mGoodItemId);
         } catch (VirtualItemNotFoundException e) {
             SoomlaUtils.LogError(TAG, "VirtualGood with itemId: " + mGoodItemId +
-                    " doesn't exist! Can't upgrade.");
+                    " doesn't exist! Can't upgrade. " + e.Message);
             return 0;
         }
 
@@ -173,7 +171,7 @@ public class UpgradeVG : LifetimeVG {
             good = (VirtualGood)StoreInfo.getVirtualItem(mGoodItemId);
         } catch (VirtualItemNotFoundException e) {
             SoomlaUtils.LogError(TAG, "VirtualGood with itemId: " + mGoodItemId
-                    + " doesn't exist! Can't downgrade.");
+                    + " doesn't exist! Can't downgrade."+" "+e.Message);
             return 0;
         }
 
@@ -194,7 +192,7 @@ public class UpgradeVG : LifetimeVG {
                 prevUpgradeVG = (UpgradeVG)StoreInfo.getVirtualItem(mPrevItemId);
             } catch (VirtualItemNotFoundException e) {
                 SoomlaUtils.LogError(TAG, "Previous UpgradeVG with itemId: " + mPrevItemId
-                        + " doesn't exist! Can't downgrade.");
+                        + " doesn't exist! Can't downgrade." + " " + e.Message);
                 return 0;
             }
             // Case: downgrade is successful!
@@ -227,7 +225,7 @@ public class UpgradeVG : LifetimeVG {
             good = (VirtualGood)StoreInfo.getVirtualItem(mGoodItemId);
         } catch (VirtualItemNotFoundException e) {
             SoomlaUtils.LogError(TAG, "VirtualGood with itemId: " + mGoodItemId +
-                    " doesn't exist! Returning NO (can't buy).");
+                    " doesn't exist! Returning NO (can't buy)." + " " + e.Message);
             return false;
         }
 

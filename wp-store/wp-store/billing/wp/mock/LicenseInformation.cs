@@ -71,6 +71,6 @@ namespace MockIAPLib
         // Summary:
         //     Not implemented for Windows Phone. Raises a notification event when the status
         //     of the app's license changes.
-        public event LicenseChangedEventHandler LicenseChanged;
+        //public event LicenseChangedEventHandler LicenseChanged;
     }
 }

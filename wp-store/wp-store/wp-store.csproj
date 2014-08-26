@@ -95,14 +95,11 @@
     <Compile Include="billing\wp\store\Dispatcher.cs" />
     <Compile Include="billing\wp\store\MarketProductInfos.cs" />
     <Compile Include="domain\VirtualItem.cs" />
-    <Compile Include="events\EventManager.cs" />
+    <Compile Include="StoreEvents.cs" />
     <Compile Include="IStoreAssets.cs" />
     <Compile Include="purchasesTypes\PurchaseType.cs" />
     <Compile Include="SoomlaStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="events\UnexpectedStoreErrorEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="exceptions\InsufficientFundsException.cs" />
@@ -120,12 +117,6 @@
     <Compile Include="data\StoreJSONConsts.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="events\MarketPurchaseStartedEventArgs.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="events\ItemPurchaseStartedEventArgs.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="purchasesTypes\PurchaseWithVirtualItem.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -133,9 +124,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="domain\VirtualCategory.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="events\ItemPurchasedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="data\StorageManager.cs" />
@@ -151,9 +139,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="data\VirtualGoodsStorage.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="events\GoodUpgradeEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="domain\virtualGoods\UpgradeVG.cs" />
@@ -174,17 +159,7 @@
     <Compile Include="exceptions\NotEnoughGoodsException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="events\GoodBalanceChangedEventArgs.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="events\GoodEquippedEventArgs.cs" />
-    <Compile Include="events\GoodUnEquippedEvent.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="data\VirtualCurrencyStorage.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="events\CurrencyBalanceChangedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="data\NonConsumableItemsStorage.cs" />
@@ -203,20 +178,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="StoreInventory.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="events\MarketItemsRefreshFinishedEventArgs.cs" />
-    <Compile Include="events\MarketItemsRefreshStartedEventArgs.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="events\RestoreTransactionsFinishedEventArgs.cs" />
-    <Compile Include="events\RestoreTransactionsStartedEventArgs.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="events\MarketPurchaseCancelledEventArgs.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="events\MarketPurchaseEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

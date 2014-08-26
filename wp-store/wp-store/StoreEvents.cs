@@ -1,14 +1,27 @@
-﻿using System;
+﻿/// Copyright (C) 2012-2014 Soomla Inc.
+///
+/// Licensed under the Apache License, Version 2.0 (the "License");
+/// you may not use this file except in compliance with the License.
+/// You may obtain a copy of the License at
+///
+///      http://www.apache.org/licenses/LICENSE-2.0
+///
+/// Unless required by applicable law or agreed to in writing, software
+/// distributed under the License is distributed on an "AS IS" BASIS,
+/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+/// See the License for the specific language governing permissions and
+/// limitations under the License.
+/// 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SoomlaWpCore;
 using SoomlaWpStore.domain;
-using SoomlaWpStore.events;
 using SoomlaWpStore.domain.virtualGoods;
 using SoomlaWpStore.domain.virtualCurrencies;
-namespace SoomlaWpStore.events
+namespace SoomlaWpStore
 {
     public delegate void ItemPurchaseStartedEventHandler(PurchasableVirtualItem purchasableVirtualItem);
     public delegate void ItemPurchasedEventHandler(PurchasableVirtualItem purchasableVirtualItem, String payload);
@@ -27,14 +40,14 @@ namespace SoomlaWpStore.events
     public delegate void MarketPurchaseEventHandler(PurchasableVirtualItem purchasableVirtualItem, String payload,String token);
     public delegate void MarketPurchaseCancelledEventHandler(PurchasableVirtualItem purchasableVirtualItem);
 
-    public class EventManager
+    public class StoreEvents
     {
-        public static EventManager instance;
-        public static EventManager GetInstance()
+        public static StoreEvents instance;
+        public static StoreEvents GetInstance()
         {
             if(instance==null)
             {
-                instance = new EventManager();
+                instance = new StoreEvents();
             }
             return instance;
         }

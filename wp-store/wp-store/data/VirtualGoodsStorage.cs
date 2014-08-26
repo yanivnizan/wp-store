@@ -1,39 +1,23 @@
-/*
- * Copyright (C) 2012-2014 Soomla Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/// Copyright (C) 2012-2014 Soomla Inc.
+///
+/// Licensed under the Apache License, Version 2.0 (the "License");
+/// you may not use this file except in compliance with the License.
+/// You may obtain a copy of the License at
+///
+///      http://www.apache.org/licenses/LICENSE-2.0
+///
+/// Unless required by applicable law or agreed to in writing, software
+/// distributed under the License is distributed on an "AS IS" BASIS,
+/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+/// See the License for the specific language governing permissions and
+/// limitations under the License.
 
-/*
-import com.soomla.BusProvider;
-import com.soomla.SoomlaUtils;
-import com.soomla.data.KeyValueStorage;
-import com.soomla.store.domain.VirtualItem;
-import com.soomla.store.domain.virtualGoods.EquippableVG;
-import com.soomla.store.domain.virtualGoods.UpgradeVG;
-import com.soomla.store.domain.virtualGoods.VirtualGood;
-import com.soomla.store.events.OnGoodBalanceChangedEvent;
-import com.soomla.store.events.OnGoodEquippedEvent;
-import com.soomla.store.events.OnGoodUnEquippedEvent;
-import com.soomla.store.events.OnGoodUpgradeEvent;
-import com.soomla.store.exceptions.VirtualItemNotFoundException;
-*/
 using System;
 using SoomlaWpCore;
 using SoomlaWpCore.data;
 using SoomlaWpStore.domain;
 using SoomlaWpStore.domain.virtualGoods;
-using SoomlaWpStore.events;
+using SoomlaWpStore;
 using SoomlaWpStore.exceptions;
 
 namespace SoomlaWpStore.data 
@@ -76,7 +60,7 @@ public class VirtualGoodsStorage : VirtualItemStorage{
         KeyValueStorage.DeleteKeyValue(key);
 
         if (notify) {
-			EventManager.GetInstance().PostGoodUpgradeEvent(good,null);
+			StoreEvents.GetInstance().PostGoodUpgradeEvent(good,null);
         }
     }
 
@@ -112,7 +96,7 @@ public class VirtualGoodsStorage : VirtualItemStorage{
         KeyValueStorage.SetValue(key, upItemId);
 
         if (notify) {
-			EventManager.GetInstance().PostGoodUpgradeEvent(good,upgradeVG);
+			StoreEvents.GetInstance().PostGoodUpgradeEvent(good,upgradeVG);
         }
     }
 
@@ -140,10 +124,10 @@ public class VirtualGoodsStorage : VirtualItemStorage{
             return (UpgradeVG) StoreInfo.getVirtualItem(upItemId);
         } catch (VirtualItemNotFoundException e) {
             SoomlaUtils.LogError(mTag,
-                    "The current upgrade's itemId from the DB is not found in StoreInfo.");
+                    "The current upgrade's itemId from the DB is not found in StoreInfo." + " " + e.Message);
         } catch (InvalidCastException e) {
             SoomlaUtils.LogError(mTag,
-                    "The current upgrade's itemId from the DB is not an UpgradeVG.");
+                    "The current upgrade's itemId from the DB is not an UpgradeVG." + " " + e.Message);
         }
 
         return null;
@@ -221,7 +205,7 @@ public class VirtualGoodsStorage : VirtualItemStorage{
      * @{inheritDoc}
      */
     protected override void postBalanceChangeEvent(VirtualItem item, int balance, int amountAdded) {
-        EventManager.GetInstance().PostGoodBalanceChangedEvent((VirtualGood)item,balance, amountAdded);
+        StoreEvents.GetInstance().PostGoodBalanceChangedEvent((VirtualGood)item,balance, amountAdded);
     }
 
     /**
@@ -236,12 +220,12 @@ public class VirtualGoodsStorage : VirtualItemStorage{
         if (equip) {
             KeyValueStorage.SetValue(key, "");
             if (notify) {
-                EventManager.GetInstance().PostGoodEquippedEvent(good);
+                StoreEvents.GetInstance().PostGoodEquippedEvent(good);
             }
         } else {
             KeyValueStorage.DeleteKeyValue(key);
             if (notify) {
-                EventManager.GetInstance().PostGoodUnEquippedEvent(good);
+                StoreEvents.GetInstance().PostGoodUnEquippedEvent(good);
             }
         }
     }

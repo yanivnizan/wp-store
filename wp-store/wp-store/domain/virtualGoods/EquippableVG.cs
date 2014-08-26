@@ -1,18 +1,16 @@
-/*
- * Copyright (C) 2012-2014 Soomla Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/// Copyright (C) 2012-2014 Soomla Inc.
+///
+/// Licensed under the Apache License, Version 2.0 (the "License");
+/// you may not use this file except in compliance with the License.
+/// You may obtain a copy of the License at
+///
+///      http://www.apache.org/licenses/LICENSE-2.0
+///
+/// Unless required by applicable law or agreed to in writing, software
+/// distributed under the License is distributed on an "AS IS" BASIS,
+/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+/// See the License for the specific language governing permissions and
+/// limitations under the License.
 
 using System;
 using SoomlaWpCore;
@@ -120,7 +118,7 @@ public class EquippableVG : LifetimeVG{
             
             jsonObject.Add(StoreJSONConsts.EQUIPPABLE_EQUIPPING, mEquippingModel.ToString());
         } catch (Exception e) {
-            SoomlaUtils.LogError(TAG, "An error occurred while generating JSON object.");
+            SoomlaUtils.LogError(TAG, "An error occurred while generating JSON object. "+e.Message);
         }
 
         return jsonObject;
@@ -153,7 +151,7 @@ public class EquippableVG : LifetimeVG{
                 } catch (VirtualItemNotFoundException e) {
                     SoomlaUtils.LogError(TAG,
                             "Tried to unequip all other category VirtualGoods but there was no " +
-                            "associated category. virtual good itemId: " + getItemId());
+                            "associated category. virtual good itemId: " + getItemId()+" "+e.Message);
                     return;
                 }
 
@@ -168,11 +166,11 @@ public class EquippableVG : LifetimeVG{
                     } catch (VirtualItemNotFoundException e) {
                         SoomlaUtils.LogError(TAG, "On equip, couldn't find one of the itemIds "
                                 + "in the category. Continuing to the next one. itemId: "
-                                + goodItemId);
+                                + goodItemId + " " + e.Message);
                     } catch (InvalidCastException ex) {
                         SoomlaUtils.LogDebug(TAG, "On equip, an error occurred. It's a debug "
                                 + "message b/c the VirtualGood may just not be an EquippableVG. "
-                                + "itemId: " + goodItemId);
+                                + "itemId: " + goodItemId + " " + ex.Message);
                     }
                 }
             } else if (mEquippingModel == EquippingModel.GLOBAL) {

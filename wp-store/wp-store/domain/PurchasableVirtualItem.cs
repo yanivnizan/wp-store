@@ -1,18 +1,16 @@
-/*
- * Copyright (C) 2012-2014 Soomla Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/// Copyright (C) 2012-2014 Soomla Inc.
+///
+/// Licensed under the Apache License, Version 2.0 (the "License");
+/// you may not use this file except in compliance with the License.
+/// You may obtain a copy of the License at
+///
+///      http://www.apache.org/licenses/LICENSE-2.0
+///
+/// Unless required by applicable law or agreed to in writing, software
+/// distributed under the License is distributed on an "AS IS" BASIS,
+/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+/// See the License for the specific language governing permissions and
+/// limitations under the License.
 
 using System;
 using SoomlaWpCore;
@@ -23,19 +21,18 @@ using Newtonsoft.Json.Linq;
 
 namespace SoomlaWpStore.domain
 {
-/**
- * A representation of a <code>VirtualItem</code> that you can actually purchase.
- */
+    /// <summary>
+    /// A representation of a <code>VirtualItem</code> that you can actually purchase.
+    /// </summary>
 public abstract class PurchasableVirtualItem : VirtualItem {
 
-    /**
-     * Constructor.
-     *
-     * @param mName see parent
-     * @param mDescription see parent
-     * @param mItemId see parent
-     * @param purchaseType the way this item is purchased
-     */
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PurchasableVirtualItem"/> class.
+    /// </summary>
+    /// <param name="mName">Name</param>
+    /// <param name="mDescription">Description.</param>
+    /// <param name="mItemId">item identifier.</param>
+    /// <param name="purchaseType">Type of the purchase.</param>
     public PurchasableVirtualItem(String mName, String mDescription, String mItemId,
                                   PurchaseType purchaseType) : base(mName, mDescription, mItemId) {
         
@@ -43,12 +40,10 @@ public abstract class PurchasableVirtualItem : VirtualItem {
         mPurchaseType.setAssociatedItem(this);
     }
 
-    /**
-     * Constructor.
-     *
-     * @param jsonObject see parent
-     * @throws JSONException
-     */
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PurchasableVirtualItem"/> class.
+    /// </summary>
+    /// <param name="jsonObject">The json object.</param>
     public PurchasableVirtualItem(JObject jsonObject) : base(jsonObject){
         
         JObject purchasableObj = jsonObject.Value<JObject>(StoreJSONConsts.PURCHASABLE_ITEM);
@@ -101,16 +96,14 @@ public abstract class PurchasableVirtualItem : VirtualItem {
 
             jsonObject.Add(StoreJSONConsts.PURCHASABLE_ITEM, purchasableObj);
         } catch (Exception e) {
-            SoomlaUtils.LogError(TAG, "An error occurred while generating JSON object.");
+            SoomlaUtils.LogError(TAG, "An error occurred while generating JSON object." + " " + e.Message);
         }
 
         return jsonObject;
     }
 
     /**
-     * Buys the <code>PurchasableVirtualItem</code>, after checking if the user is in a state that
-     * allows him/her to buy. This action uses the associated <code>PurchaseType</code> to perform
-     * the purchase.
+     * Buys the <code>PurchasableVirtualItem</code>, after checking if the user is in a state that allows him/her to buy. This action uses the associated <code>PurchaseType</code> to perform the purchase.
      *
      * @param payload a string you want to be assigned to the purchase. This string
      *   is saved in a static variable and will be given bacl to you when the

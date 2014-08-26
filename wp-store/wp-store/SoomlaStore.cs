@@ -1,4 +1,18 @@
-﻿using System;
+﻿/// Copyright (C) 2012-2014 Soomla Inc.
+///
+/// Licensed under the Apache License, Version 2.0 (the "License");
+/// you may not use this file except in compliance with the License.
+/// You may obtain a copy of the License at
+///
+///      http://www.apache.org/licenses/LICENSE-2.0
+///
+/// Unless required by applicable law or agreed to in writing, software
+/// distributed under the License is distributed on an "AS IS" BASIS,
+/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+/// See the License for the specific language governing permissions and
+/// limitations under the License.
+
+using System;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,7 +26,6 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using SoomlaWpCore;
 using SoomlaWpCore.data;
-using SoomlaWpStore.events;
 using SoomlaWpStore.domain;
 using SoomlaWpStore.data;
 using SoomlaWpStore.purchasesTypes;
@@ -23,12 +36,15 @@ namespace SoomlaWpStore
     public class SoomlaStore
     {
         
-        /**
-     * Initializes the SOOMLA SDK.
-     * This initializer also initializes {@link com.soomla.store.data.StoreInfo}.
-     *
-     * @param storeAssets the definition of your application specific assets.
-     */
+    /// <summary>
+    /// Initializes the SOOMLA SDK.
+    /// This initializer also initializes StoreInfo.
+    /// </summary>
+    ///
+    /// <param name="storeAssets">  The store assets. </param>
+    /// <param name="testMode">     Run in testmode for store IAP </param>
+    ///
+    /// <returns>   true if it succeeds, false if it fails. </returns>
     public bool initialize(IStoreAssets storeAssets, bool testMode) {
         if (mInitialized) {
             String err = "SoomlaStore is already initialized. You can't initialize it twice!";
@@ -53,28 +69,27 @@ namespace SoomlaWpStore
         refreshInventory();
 
         mInitialized = true;
-        EventManager.GetInstance().PostSoomlaStoreInitializedEvent();
+        StoreEvents.GetInstance().PostSoomlaStoreInitializedEvent();
         return true;
     }
 
-    /**
-     * Restoring old purchases for the current user (device).
-     * Here we just call the private function without refreshing market items details.
-     */
+    /// <summary>
+    /// Restoring old purchases for the current user (device).
+    /// Here we just call the private function without refreshing market items details.
+    /// </summary>
     public void restoreTransactions() {
         restoreTransactions(false);
     }
 
-    /**
-     * Restoring old purchases for the current user (device).
-     *
-     * @param followedByRefreshItemsDetails determines weather we should perform a refresh market
-     *                                      items operation right after a restore purchase success.
-     */
+    /// <summary>   Restoring old purchases for the current user (device). </summary>
+    ///
+    /// <param name="followedByRefreshItemsDetails">    determines weather we should perform a
+    ///                                                 refresh market items operation right after a
+    ///                                                 restore purchase success. </param>
     private void restoreTransactions(bool followedByRefreshItemsDetails) {
         SoomlaUtils.LogDebug(TAG, "TODO restore Transaction");
 
-        EventManager.GetInstance().PostRestoreTransactionsStartedEvent();
+        StoreEvents.GetInstance().PostRestoreTransactionsStartedEvent();
 
         if (StoreConfig.STORE_TEST_MODE)
         {
@@ -103,7 +118,7 @@ namespace SoomlaWpStore
         
 
 
-        EventManager.GetInstance().PostRestoreTransactionsFinishedEvent(true);
+        StoreEvents.GetInstance().PostRestoreTransactionsFinishedEvent(true);
 
         if (followedByRefreshItemsDetails)
         {
@@ -198,11 +213,11 @@ namespace SoomlaWpStore
             catch (VirtualItemNotFoundException e)
             {
                 String msg = "(refreshInventory) Couldn't find a "
-                        + "purchasable item associated with: " + productId;
+                        + "purchasable item associated with: " + productId + " " + e.Message;
                 SoomlaUtils.LogError(TAG, msg);
             }
         }
-        EventManager.GetInstance().PostMarketItemsRefreshFinishedEvent(marketItems);
+        StoreEvents.GetInstance().PostMarketItemsRefreshFinishedEvent(marketItems);
         
         /*
         mInAppBillingService.initializeBillingService(
@@ -302,13 +317,13 @@ namespace SoomlaWpStore
         try {
             pvi = StoreInfo.getPurchasableItem(marketItem.getProductId());
         } catch (VirtualItemNotFoundException e) {
-            String msg = "Couldn't find a purchasable item associated with: " + marketItem.getProductId();
+            String msg = "Couldn't find a purchasable item associated with: " + marketItem.getProductId() + " " + e.Message;
             SoomlaUtils.LogError(TAG, msg);
-            EventManager.GetInstance().PostUnexpectedStoreErrorEvent(msg);
+            StoreEvents.GetInstance().PostUnexpectedStoreErrorEvent(msg);
             return;
         }
 
-        EventManager.GetInstance().PostMarketPurchaseStartedEvent(pvi);
+        StoreEvents.GetInstance().PostMarketPurchaseStartedEvent(pvi);
         StoreManager.GetInstance().PurchaseProduct(marketItem.getProductId());
         /*
         mInAppBillingService.initializeBillingService
@@ -412,9 +427,9 @@ namespace SoomlaWpStore
             SoomlaUtils.LogError(TAG, "(handleSuccessfulPurchase - purchase or query-inventory) "
                     + "ERROR : Couldn't find the " +
                     " VirtualCurrencyPack OR MarketItem  with productId: " + productId +
-                    ". It's unexpected so an unexpected error is being emitted.");
-            EventManager.GetInstance().PostUnexpectedStoreErrorEvent("Couldn't find the productId "
-                    + "of a product after purchase or query-inventory.");
+                    ". It's unexpected so an unexpected error is being emitted." + " " + e.Message);
+            StoreEvents.GetInstance().PostUnexpectedStoreErrorEvent("Couldn't find the productId "
+                    + "of a product after purchase or query-inventory." + " " + e.Message);
             return;
         }
         
@@ -431,10 +446,10 @@ namespace SoomlaWpStore
             }
         }
 
-        EventManager.GetInstance().PostMarketPurchaseEvent(pvi,null,null);
+        StoreEvents.GetInstance().PostMarketPurchaseEvent(pvi,null,null);
         pvi.give(1);
         
-        EventManager.GetInstance().PostItemPurchasedEvent(pvi, null);
+        StoreEvents.GetInstance().PostItemPurchasedEvent(pvi, null);
         consumeIfConsumable(pvi);
 
         /*
@@ -504,12 +519,12 @@ namespace SoomlaWpStore
         
         try {
             PurchasableVirtualItem v = StoreInfo.getPurchasableItem(productId);
-            EventManager.GetInstance().PostMarketPurchaseCancelledEvent(v);
+            StoreEvents.GetInstance().PostMarketPurchaseCancelledEvent(v);
         } catch (VirtualItemNotFoundException e) {
             SoomlaUtils.LogError(TAG, "(purchaseActionResultCancelled) ERROR : Couldn't find the "
                     + "VirtualCurrencyPack OR MarketItem  with productId: " + productId
                     + ". It's unexpected so an unexpected error is being emitted.");
-            EventManager.GetInstance().PostUnexpectedStoreErrorEvent(e.Message);
+            StoreEvents.GetInstance().PostUnexpectedStoreErrorEvent(e.Message);
         }
         
     }
@@ -528,7 +543,7 @@ namespace SoomlaWpStore
             }
         } catch (Exception e) {
             SoomlaUtils.LogDebug(TAG, "Error while consuming: itemId: " + pvi.getItemId());
-            EventManager.GetInstance().PostUnexpectedStoreErrorEvent(e.Message);
+            StoreEvents.GetInstance().PostUnexpectedStoreErrorEvent(e.Message);
         }
         
     }
@@ -540,7 +555,7 @@ namespace SoomlaWpStore
      */
     private void handleErrorResult(String message) {
         //BusProvider.getInstance().post(new OnUnexpectedStoreErrorEvent(message));
-        EventManager.GetInstance().PostUnexpectedStoreErrorEvent(message);
+        StoreEvents.GetInstance().PostUnexpectedStoreErrorEvent(message);
         SoomlaUtils.LogError(TAG, "ERROR: IabPurchase failed: " + message);
     }
 
