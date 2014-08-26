@@ -14,7 +14,7 @@ StoreInventory.BuyItem("[itemId]");
 wp-store
 ---
 
-*SOOMLA's Store Module for Unity3d*
+*SOOMLA's Store Module for Windows Phone 8*
 
 **August 25th, 2014**: v0.0.1 
 
@@ -31,8 +31,8 @@ wp-store is the Windows Phone 8 flavor of SOOMLA's Store Module.
 
 ####Dll:
 
-[soomla-unity3d-core v1.5.3](https://raw.githubusercontent.com/soomla/unity3d-store/master/soomla-unity3d-core.unitypackage)  
-[unity3d-store v1.5.3](http://bit.ly/1rc21Zo)  
+[soomla-wp-core master](https://github.com/soomla/soomla-wp-core/archive/master.zip)  
+[wp-store master](https://github.com/soomla/wp-store/archive/master)
 
 ## Debugging
 
@@ -49,8 +49,8 @@ $ git clone --recursive git@github.com:soomla/wp-store.git
 
 ## Getting Started
 
-1. Download the [soomla wp-core](https://raw.githubusercontent.com/soomla/wp-store/master/).
-2. Add the wp-store.csproj and soomla-wp_core.csproj to your solution.
+1. Download the [soomla-wp-core](https://github.com/soomla/soomla-wp-core/archive/master.zip) and [wp-store](https://github.com/soomla/wp-store/archive/master.zip)
+2. Add wp-store.csproj and soomla-wp_core.csproj to your solution and reference them in your project.
 3. Initialize the soomla-wp-core Module with the encryption key and the testMode switch
 	```cs
 	bool testMode = true;
