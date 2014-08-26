@@ -49,13 +49,14 @@ $ git clone --recursive git@github.com:soomla/wp-store.git
 
 ## Getting Started
 
-1. Download the [soomla-unity3d-core](https://raw.githubusercontent.com/soomla/unity3d-store/master/soomla-unity3d-core.unitypackage) and [unity3d-store](http://bit.ly/1rc21Zo) unitypackages and double-click on them (first 'Core' then 'Store'). It'll import all the necessary files into your project.
-2. Drag the "StoreEvents" and "CoreEvents" Prefabs from `../Assets/Soomla/Prefabs` into your scene. You should see it listed in the "Hierarchy" panel. [This step MUST be done for unity3d-store to work properly]
-3. On the menu bar click "Window -> Soomla -> Edit Settings" and change the value for "Soomla Secret" (also setup Public Key if you're building for Google Play):
-    - _Soomla Secret_ - is an encryption secret you provide that will be used to secure your data. (If you used versions before v1.5.2 this secret MUST be the same as Custom Secret)  
-    **Choose the secret wisely. You can't change them after you launch your game!**
-    - _Public Key_ - is the public key given to you from Google. (iOS doesn't have a public key).
-4. Create your own implementation of _IStoreAssets_ in order to describe your specific game's assets ([example](https://github.com/soomla/unity3d-store/blob/master/Soomla/Assets/Examples/MuffinRush/MuffinRushAssets.cs)). Initialize _SoomlaStore_ with the class you just created:
+1. Download the [soomla wp-core](https://raw.githubusercontent.com/soomla/wp-store/master/).
+2. Add the wp-store.csproj and soomla-wp_core.csproj to your solution.
+3. Initialize the soomla-wp-core Module with the encryption key and the testMode switch
+	```cs
+	bool testMode = true;
+    Soomla.Initialize("YOU_ENCRYPTION_KEY",testMode);
+    ```
+4. Create your own implementation of _IStoreAssets_ in order to describe your specific game's assets ([example](https://github.com/soomla/wp-store/blob/master//wp-store-example/wp-store-example/StoreAssets.cs)). Initialize _SoomlaStore_ with the class you just created:
 
     ```cs
     SoomlaStore.Initialize(new YourStoreAssetsImplementation());
@@ -63,34 +64,17 @@ $ git clone --recursive git@github.com:soomla/wp-store.git
 
     > Initialize _SoomlaStore_ ONLY ONCE when your application loads.
 
-    > Initialize _SoomlaStore_ in the "Start()" function of a 'MonoBehaviour' and **NOT** in the "Awake()" function. SOOMLA has its own 'MonoBehaviour' and it needs to be "Awakened" before you initialize.
+    > You can initialize _SoomlaStore_ in the "MainPage()" function of a 'PhoneApplicationPage'.
 
-5. You'll need an event handler in order to be notified about in-app purchasing related events. refer to the [Event Handling](https://github.com/soomla/unity3d-store#event-handling) section for more information.
+5. You'll need an event handler in order to be notified about in-app purchasing related events. refer to the [Event Handling](https://github.com/soomla/wp-store#event-handling) section for more information.
 
 And that's it ! You have storage and in-app purchasing capabilities... ALL-IN-ONE.
-
-### Unity & Android
-
-#### Starting IAB Service in background
-
-If you have your own storefront implemented inside your game, it's recommended that you open the IAB Service in the background when the store opens and close it when the store is closed.
-
-```cs
-// Start Iab Service
-SoomlaStore.StartIabServiceInBg();
-
-// Stop Iab Service
-SoomlaStore.StopIabServiceInBg();
-```
-
-Don't forget to close the Iab Service when your store is closed. You don't have to do this at all, this is just an optimization.
-
 
 ## What's next? In App Purchasing.
 
 When we implemented modelV3, we were thinking about ways that people buy things inside apps. We figured out many ways you can let your users purchase stuff in your game and we designed the new modelV3 to support 2 of them: PurchaseWithMarket and PurchaseWithVirtualItem.
 
-**PurchaseWithMarket** is a PurchaseType that allows users to purchase a VirtualItem with Google Play or the App Store.  
+**PurchaseWithMarket** is a PurchaseType that allows users to purchase a VirtualItem with the Windows Store.  
 **PurchaseWithVirtualItem** is a PurchaseType that lets your users purchase a VirtualItem with a different VirtualItem. For Example: Buying 1 Sword with 100 Gems.
 
 In order to define the way your various virtual items (Goods, Coins ...) are purchased, you'll need to create your implementation of IStoreAsset (the same one from step 4 in the "Getting Started" above).
@@ -116,7 +100,7 @@ Now you can use _StoreInventory_ to buy your new VirtualCurrencyPack:
 StoreInventory.buyItem(TEN_COINS_PACK.ItemId);
 ```
 
-And that's it! unity3d-wp knows how to contact Windows Store for you and will redirect your users to their purchasing system to complete the transaction. Don't forget to subscribe to store events in order to get the notified of successful or failed purchases (see [Event Handling](https://github.com/soomla/wp-store#event-handling)).
+And that's it! wp-store knows how to contact Windows Store for you and will redirect your users to their purchasing system to complete the transaction. Don't forget to subscribe to store events in order to get the notified of successful or failed purchases (see [Event Handling](https://github.com/soomla/wp-store#event-handling)).
 
 
 Storage & Meta-Data
@@ -161,26 +145,23 @@ SOOMLA lets you subscribe to store events, get notified and implement your own a
 
 > Your behavior is an addition to the default behavior implemented by SOOMLA. You don't replace SOOMLA's behavior.
 
-The 'Events' class is where all event go through. To handle various events, just add your specific behavior to the delegates in the Events class.
+The 'StoreEvents' class is where all event go through. To handle various events, just add your specific behavior to the delegates in the Events class.
 
 For example, if you want to 'listen' to a MarketPurchase event:
 
 ```cs
-StoreEvents.OnMarketPurchase += onMarketPurchase;
+StoreEvents.GetInstance().OnMarketPurchase += new MarketPurchaseEventHandler(onMarketPurchase);
 
-public void onMarketPurchase(PurchasableVirtualItem pvi, string purchaseToken, string payload) {
+public void onMarketPurchase(PurchasableVirtualItem pvi, string payload, string purchaseToken) {
     Debug.Log("Just purchased an item with itemId: " + pvi.ItemId);
 }
 ```
 
-One thing you need to make sure is that you instantiate your EventHandler before SoomlaStore.  
-So if you have:
-````
-private static Soomla.Example.ExampleEventHandler handler;
-````
+One thing you need to make sure is that you add your specific behavior before initializing SoomlaStore.  
+
 you'll need to do:
 ````
-handler = new Soomla.Example.ExampleEventHandler();
+StoreEvents.GetInstance().OnCurrencyBalanceChangedEvent += new CurrencyBalanceChangedEventHandler(UpdateCurrencyBalance);
 ````
 before
 ````
