@@ -56,6 +56,7 @@ $ git clone --recursive git@github.com:soomla/wp-store.git
 1. Download the [soomla-wp-core](https://github.com/soomla/soomla-wp-core/archive/master.zip) and [wp-store](https://github.com/soomla/wp-store/archive/master.zip)
 2. Add wp-store.csproj and soomla-wp-core.csproj to your solution and reference them in your project.
 3. Initialize the soomla-wp-core module with the encryption key and the testMode switch.
+	
 	```cs
 	bool testMode = true;
     Soomla.Initialize("YOU_ENCRYPTION_KEY",testMode);
