@@ -127,7 +127,7 @@ public class SingleUsePackVG : VirtualGood {
     /**
      * @{inheritDoc}
      */
-    protected override bool canBuy() {
+    protected override bool CanBuy() {
         return true;
     }
 

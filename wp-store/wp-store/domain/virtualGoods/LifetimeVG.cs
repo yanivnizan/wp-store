@@ -125,7 +125,7 @@ namespace SoomlaWpStore.domain.virtualGoods
      *
      * @return true if buying is allowed, false otherwise
      */
-    protected override bool canBuy() {
+    protected override bool CanBuy() {
         int balance = StorageManager.getVirtualGoodsStorage().getBalance(this);
 
         return balance < 1;

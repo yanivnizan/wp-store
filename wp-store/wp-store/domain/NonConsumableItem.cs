@@ -89,7 +89,7 @@ namespace SoomlaWpStore.domain
      *
      * @return True if the user does NOT own such an item, False otherwise.
      */
-    protected override bool canBuy() {
+    protected override bool CanBuy() {
         if (StorageManager.getNonConsumableItemsStorage().nonConsumableItemExists(this)) {
             SoomlaUtils.LogDebug(TAG,
                     "You can't buy a NonConsumableItem that was already given to the user.");

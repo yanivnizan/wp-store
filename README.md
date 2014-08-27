@@ -18,7 +18,7 @@ wp-store
 
 *SOOMLA's Store Module for Windows Phone 8*
 
-**August 25th, 2014**: v0.0.1 
+**August 27th, 2014**: v0.0.1 beta
 
 * More documentation and information in SOOMLA's [Knowledge Base](http://know.soom.la/docs/platforms/unity)  
 * For issues you can use the [issues](https://github.com/soomla/wp-store/issues) section or SOOMLA's [Answers Website](http://answers.soom.la)

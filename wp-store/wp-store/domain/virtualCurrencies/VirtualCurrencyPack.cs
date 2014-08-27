@@ -134,7 +134,7 @@ public class VirtualCurrencyPack : PurchasableVirtualItem {
     /**
      * @{inheritDoc}
      */
-    protected override bool canBuy() {
+    protected override bool CanBuy() {
         return true;
     }
 

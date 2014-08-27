@@ -94,6 +94,7 @@
     <Compile Include="billing\wp\store\StoreManager.cs" />
     <Compile Include="billing\wp\store\Dispatcher.cs" />
     <Compile Include="billing\wp\store\MarketProductInfos.cs" />
+    <Compile Include="data\GenericStoreAssets.cs" />
     <Compile Include="domain\VirtualItem.cs" />
     <Compile Include="StoreEvents.cs" />
     <Compile Include="IStoreAssets.cs" />

@@ -88,7 +88,7 @@ public class SingleUseVG : VirtualGood{
      *
      * @return true - users can ALWAYS purchase <code>SingleUseVG</code>s.
      */
-    protected override bool canBuy() {
+    protected override bool CanBuy() {
         return true;
     }
 }

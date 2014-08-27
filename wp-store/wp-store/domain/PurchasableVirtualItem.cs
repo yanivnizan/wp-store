@@ -111,7 +111,7 @@ public abstract class PurchasableVirtualItem : VirtualItem {
      * @throws InsufficientFundsException if the user does not have enough funds for buying.
      */
     public void buy(String payload) {
-        if (!canBuy()) return;
+        if (!CanBuy()) return;
 
         mPurchaseType.buy(payload);
     }
@@ -122,12 +122,12 @@ public abstract class PurchasableVirtualItem : VirtualItem {
      *
      * @return true if can buy, false otherwise
      */
-    protected abstract bool canBuy();
+    protected abstract bool CanBuy();
 
 
     /** Setters and Getters */
 
-    public PurchaseType getPurchaseType() {
+    public PurchaseType GetPurchaseType() {
         return mPurchaseType;
     }
 

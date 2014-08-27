@@ -66,6 +66,12 @@ public class StoreInfo {
         }
     }
 
+
+    public static void BuildStoreAssetsFromJson(String JsonStoreAsset)
+    {
+
+    }
+
     /**
      * Initializes <code>StoreInfo</code> from the database. This action should be performed only
      * once during the lifetime of a session of the game. <code>SoomlaStore</code> automatically
@@ -286,7 +292,7 @@ public class StoreInfo {
 
                 mVirtualItems.Add(pack.getItemId(), pack);
 
-                PurchaseType purchaseType = pack.getPurchaseType();
+                PurchaseType purchaseType = pack.GetPurchaseType();
                 if (purchaseType is PurchaseWithMarket) {
                     mPurchasableItems.Add(((PurchaseWithMarket) purchaseType)
                             .getMarketItem().getProductId(), pack);
@@ -379,7 +385,7 @@ public class StoreInfo {
 
                 mVirtualItems.Add(non.getItemId(), non);
 
-                PurchaseType purchaseType = non.getPurchaseType();
+                PurchaseType purchaseType = non.GetPurchaseType();
                 if (purchaseType is PurchaseWithMarket) {
                     mPurchasableItems.Add(((PurchaseWithMarket) purchaseType)
                             .getMarketItem().getProductId(), non);
@@ -400,7 +406,7 @@ public class StoreInfo {
 
         mVirtualItems.Add(g.getItemId(), g);
 
-        PurchaseType purchaseType = g.getPurchaseType();
+        PurchaseType purchaseType = g.GetPurchaseType();
         if (purchaseType is PurchaseWithMarket) {
             mPurchasableItems.Add(((PurchaseWithMarket) purchaseType)
                     .getMarketItem().getProductId(), g);
@@ -519,7 +525,7 @@ public class StoreInfo {
 
         if (virtualItem is VirtualCurrencyPack) {
             VirtualCurrencyPack vcp = (VirtualCurrencyPack)virtualItem;
-            PurchaseType purchaseType = vcp.getPurchaseType();
+            PurchaseType purchaseType = vcp.GetPurchaseType();
             if (purchaseType is PurchaseWithMarket) {
                 mPurchasableItems.Add(((PurchaseWithMarket) purchaseType).getMarketItem()
                         .getProductId(), vcp);
@@ -546,7 +552,7 @@ public class StoreInfo {
                 upgrades.Add((UpgradeVG) vg);
             }
 
-            PurchaseType purchaseType = vg.getPurchaseType();
+            PurchaseType purchaseType = vg.GetPurchaseType();
             if (purchaseType is PurchaseWithMarket) {
                 mPurchasableItems.Add(((PurchaseWithMarket) purchaseType).getMarketItem()
                         .getProductId(), vg);
@@ -564,7 +570,7 @@ public class StoreInfo {
         if (virtualItem is NonConsumableItem) {
             NonConsumableItem non = (NonConsumableItem) virtualItem;
 
-            PurchaseType purchaseType = non.getPurchaseType();
+            PurchaseType purchaseType = non.GetPurchaseType();
             if (purchaseType is PurchaseWithMarket) {
                 mPurchasableItems.Add(((PurchaseWithMarket) purchaseType).getMarketItem()
                         .getProductId(), non);
@@ -612,7 +618,7 @@ public class StoreInfo {
         foreach(VirtualCurrencyPack vi in mCurrencyPacks) {
             mVirtualItems.Add(vi.getItemId(), vi);
 
-            PurchaseType purchaseType = vi.getPurchaseType();
+            PurchaseType purchaseType = vi.GetPurchaseType();
             if (purchaseType is PurchaseWithMarket) {
                 mPurchasableItems.Add(((PurchaseWithMarket) purchaseType).getMarketItem()
                         .getProductId(), vi);
@@ -631,7 +637,7 @@ public class StoreInfo {
                 upgrades.Add((UpgradeVG) vi);
             }
 
-            PurchaseType purchaseType = vi.getPurchaseType();
+            PurchaseType purchaseType = vi.GetPurchaseType();
             if (purchaseType is PurchaseWithMarket) {
                 mPurchasableItems.Add(((PurchaseWithMarket) purchaseType).getMarketItem()
                         .getProductId(), vi);
@@ -641,7 +647,7 @@ public class StoreInfo {
         foreach(NonConsumableItem vi in mNonConsumables) {
             mVirtualItems.Add(vi.getItemId(), vi);
 
-            PurchaseType purchaseType = vi.getPurchaseType();
+            PurchaseType purchaseType = vi.GetPurchaseType();
             if (purchaseType is PurchaseWithMarket) {
                 mPurchasableItems.Add(((PurchaseWithMarket) purchaseType).getMarketItem()
                         .getProductId(), vi);

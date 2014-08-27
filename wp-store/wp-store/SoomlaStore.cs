@@ -203,7 +203,7 @@ namespace SoomlaWpStore
                 PurchasableVirtualItem pvi = StoreInfo.
                         getPurchasableItem(productId);
                 MarketItem mi = ((PurchaseWithMarket)
-                        pvi.getPurchaseType()).getMarketItem();
+                        pvi.GetPurchaseType()).getMarketItem();
                 mi.setMarketTitle(title);
                 mi.setMarketPrice(price);
                 mi.setMarketDescription(desc);

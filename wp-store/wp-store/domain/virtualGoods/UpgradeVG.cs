@@ -219,7 +219,7 @@ public class UpgradeVG : LifetimeVG {
      *
      * @return true if can buy, false otherwise
      */
-    protected override bool canBuy() {
+    protected override bool CanBuy() {
         VirtualGood good = null;
         try {
             good = (VirtualGood)StoreInfo.getVirtualItem(mGoodItemId);
@@ -233,7 +233,7 @@ public class UpgradeVG : LifetimeVG {
         return ((upgradeVG == null && String.IsNullOrEmpty(mPrevItemId)) ||
                (upgradeVG != null && ((upgradeVG.getNextItemId() == getItemId()) ||
                        (upgradeVG.getPrevItemId() == getItemId()))))
-                && base.canBuy();
+                && base.CanBuy();
     }
 
     /** Setters and Getters **/

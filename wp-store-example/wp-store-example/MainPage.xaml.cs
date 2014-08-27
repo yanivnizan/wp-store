@@ -147,15 +147,15 @@ namespace wp_store_example
             if(item is PurchasableVirtualItem)
             {
                 PurchasableVirtualItem pvi = (PurchasableVirtualItem)item;
-                if(pvi.getPurchaseType() is PurchaseWithVirtualItem)
+                if(pvi.GetPurchaseType() is PurchaseWithVirtualItem)
                 {
-                    PurchaseWithVirtualItem purchaseType = (PurchaseWithVirtualItem)pvi.getPurchaseType();
+                    PurchaseWithVirtualItem purchaseType = (PurchaseWithVirtualItem)pvi.GetPurchaseType();
                     price.Text = "price: "+purchaseType.getAmount().ToString();
                     currency.Text = "currency: "+purchaseType.getTargetItemId();
                 }
-                if (pvi.getPurchaseType() is PurchaseWithMarket)
+                if (pvi.GetPurchaseType() is PurchaseWithMarket)
                 {
-                    PurchaseWithMarket purchaseType = (PurchaseWithMarket)pvi.getPurchaseType();
+                    PurchaseWithMarket purchaseType = (PurchaseWithMarket)pvi.GetPurchaseType();
                     price.Text = "price: "+purchaseType.getMarketItem().getMarketPrice();
                     
                 }
